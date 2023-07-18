@@ -1,17 +1,24 @@
-import logo from "./logo.svg";
 import "./App.css";
 import Header from "./Components/Header";
-import Carousel from "./Components/Carousel";
 import Marquee from "./Components/Marquee";
 import { Flex } from "@chakra-ui/react";
 import Calender from "./Components/Calender";
 import MessageBoard from "./Components/MessageBoard";
+import Swipers from "./Components/Swipers";
+import RecentApps from "./Components/RecentApps";
+import indiagate from "./assets/indiagate.jpg";
+import Footer from "./Components/Footer/Footer";
 
 function App() {
   const images = [
     "https://www.drdo.gov.in/sites/default/files/inline-images/inner-default-banner.jpg",
     "https://static.mygov.in/static/s3fs-public/styles/home-slider-image/public/mygov_168786324482937911.jpg",
     "https://c.wallhere.com/photos/fe/be/DRDO_ATAGS_Howitzer-1150847.jpg!d",
+    "https://images.unsplash.com/photo-1489223339793-de491ea9108b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
+    "https://images.unsplash.com/photo-1500252185289-40ca85eb23a7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=871&q=80",
+    "https://plus.unsplash.com/premium_photo-1661964074409-dfa736a88357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=871&q=80",
+    "https://plus.unsplash.com/premium_photo-1661875576496-01a57a1f13a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
+    indiagate,
   ];
   const Hmarquee = [
     "e-Journals",
@@ -64,12 +71,17 @@ function App() {
     <div className="App">
       <Marquee MarqueeData={Hmarquee} isVertical={false} />
       <Header />
-      <Carousel images={images} />
-      <Flex justify={"space-between"} mt={4} paddingRight={"10px"}>
+      {/* <Carousel images={images} /> */}
+      <Swipers images={images} />
+      {/* <Swiper1 /> */}
+      <Flex justify={"space-evenly"} mt={4} paddingRight={"10px"}>
         <Marquee MarqueeData={Vmarquee} isVertical={true} />
         <MessageBoard />
-        {/* <Calender /> */}
+        <Calender />
       </Flex>
+
+      <RecentApps />
+      <Footer />
     </div>
   );
 }

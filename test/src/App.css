@@ -13,8 +13,13 @@ abbr{
 }
 
 .react-calendar__navigation {
-    background: linear-gradient(to right, #0f0e17, #0075B2);
-    color:white;
+    /* background: linear-gradient(to right, #0f0e17, #0075B2); */
+	background-image:linear-gradient(45deg, #8e44ad, #058eea, #7ab6de);
+	background-clip: text;
+	color: transparent;
+	font-weight: bolder !important;
+
+    /* color:white; */
 }
 
 .glow {
@@ -35,9 +40,9 @@ abbr{
 {
 	list-style: none;
 	color: red;
-	font-size:18px;
+	font-size:14px;
 	font-family: verdana;
-	letter-spacing: 10px;
+	letter-spacing: 7px;
 	animation: animate 2s linear infinite; 
 }
 
@@ -98,3 +103,4 @@ abbr{
 		
 	}
 }
+
