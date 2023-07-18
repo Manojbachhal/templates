@@ -34,6 +34,7 @@ function Header() {
           fontWeight={"600"}
           color={"white"}
           paddingRight={"30px"}
+          overflowY={{ base: "auto", md: "auto", lg: "unset" }}
         >
           <Link>Home</Link>
           <Link>DRDO</Link>

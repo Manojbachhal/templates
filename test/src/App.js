@@ -74,7 +74,13 @@ function App() {
       {/* <Carousel images={images} /> */}
       <Swipers images={images} />
       {/* <Swiper1 /> */}
-      <Flex justify={"space-evenly"} mt={4} paddingRight={"10px"}>
+      <Flex
+        justify={"space-evenly"}
+        mt={4}
+        paddingRight={"10px"}
+        display={{ base: "block", md: "grid", lg: "flex" }}
+        gridTemplateColumns={{ md: "repeat(2,1fr)" }}
+      >
         <Marquee MarqueeData={Vmarquee} isVertical={true} />
         <MessageBoard />
         <Calender />

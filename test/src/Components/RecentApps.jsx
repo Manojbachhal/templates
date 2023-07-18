@@ -18,7 +18,10 @@ function RecentApps() {
       <Heading color={"blue.900"} fontSize="3xl" my={6} p={2}>
         RECENT APPS
       </Heading>
-      <Flex justify={"space-evenly"}>
+      <Flex
+        justify={"space-evenly"}
+        overflowY={{ base: "auto", md: "auto", lg: "unset" }}
+      >
         <Box
           className="recent"
           border={"2px solid white"}
