@@ -8,7 +8,8 @@ import Swipers from "./Components/Swipers";
 import RecentApps from "./Components/RecentApps";
 import indiagate from "./assets/indiagate.jpg";
 import Footer from "./Components/Footer/Footer";
-
+import Cards from "./Components/Cards";
+import image from "./assets/card.png";
 function App() {
   const images = [
     "https://www.drdo.gov.in/sites/default/files/inline-images/inner-default-banner.jpg",
@@ -87,7 +88,9 @@ function App() {
       </Flex>
 
       <RecentApps />
-      <Footer />
+      <img src={image} />
+      {/* <Cards /> */}
+      {/* <Footer /> */}
     </div>
   );
 }

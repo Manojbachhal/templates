@@ -36,7 +36,7 @@ function Header() {
           paddingRight={"30px"}
           overflowY={{ base: "auto", md: "auto", lg: "unset" }}
         >
-          <Link>Home</Link>
+          <Link to="/">Home</Link>
           <Link>DRDO</Link>
           <Link>Oragnisation</Link>
           <Link>Outreach</Link>
