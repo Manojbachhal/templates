@@ -1,0 +1,85 @@
+.login {
+    top: 0;
+    left: 0;
+    transition: all 0.15s linear 0s;
+    position: relative;
+    display: inline-block;
+    padding: 15px 25px;
+    background-color: orange;
+    text-transform: uppercase;
+    color: #404040;
+    font-family: arial;
+    letter-spacing: 1px;
+    box-shadow: -6px 6px 0 #404040;
+    text-decoration: none;
+}
+
+.login:hover {
+    top: 3px;
+    left: -3px;
+    box-shadow: -3px 3px 0 #404040;
+}
+
+.login:hover::after {
+    top: 1px;
+    left: -2px;
+    width: 4px;
+    height: 4px;
+}
+
+.login:hover::before {
+    bottom: -2px;
+    right: 1px;
+    width: 4px;
+    height: 4px;
+}
+
+.login::after {
+    transition: all 0.15s linear 0s;
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: -4px;
+    width: 8px;
+    height: 8px;
+    background-color: #404040;
+    transform: rotate(45deg);
+    z-index: -1;
+}
+
+.login::before {
+    transition: all 0.15s linear 0s;
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    background-color: #404040;
+    transform: rotate(45deg);
+    z-index: -1;
+}
+
+.login:active {
+    top: 6px;
+    left: -6px;
+    box-shadow: none;
+}
+
+.login:active::before {
+    bottom: 1px;
+    right: 1px;
+}
+
+.login:active::after {
+    top: 1px;
+    left: 1px;
+}
+.announcement {
+    border: 3px solid black;
+    background-image: url("https://github.githubassets.com/images/modules/site/home-campaign/git-branch-productivity.svg");
+    background-repeat: no-repeat;
+    justify-content: center;
+    align-items: center;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
