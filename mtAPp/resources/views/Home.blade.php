@@ -9,178 +9,251 @@
     <script src="
         https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js">
     </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
     <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
-        .carousel-item>img {
-            height: 65vh;
-            object-fit: cover;
-        }
+        /* Import Google font - Poppins */
 
-        .splide__slide.is-active {
-            padding: 10px 15px;
-            background: #22bacb !important;
+
+
+
+        .wrapper {
+            width: 450px;
+            background: #fff;
             border-radius: 10px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
         }
 
-        .splide__slide {
-            height: 20% !important;
-            transition: 0.4s ease-in;
+        .wrapper header {
+            display: flex;
+            align-items: center;
+            padding: 25px 30px 10px;
+            justify-content: space-between;
         }
 
-        .slider {
-            margin-left: 15%;
-            width: 85%;
-            padding: 0;
+        header .icons {
+            display: flex;
         }
 
-        .splide {
+        header .icons span {
+            height: 38px;
+            width: 38px;
+            margin: 0 1px;
+            cursor: pointer;
+            color: #878787;
+            text-align: center;
+            line-height: 38px;
+            font-size: 1.9rem;
+            user-select: none;
+            border-radius: 50%;
+        }
+
+        .icons span:last-child {
+            margin-right: -10px;
+        }
+
+        header .icons span:hover {
+            background: #f2f2f2;
+        }
+
+        header .current-date {
+            font-size: 1.45rem;
+            font-weight: 500;
+        }
+
+        .calendar {
+            padding: 20px;
+        }
+
+        .calendar ul {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            text-align: center;
+        }
+
+        .calendar .days {
+            margin-bottom: 20px;
+        }
+
+        .calendar li {
+            color: #333;
+            width: calc(100% / 7);
+            font-size: 1.07rem;
+        }
+
+        .calendar .weeks li {
+            font-weight: 500;
+            cursor: default;
+        }
+
+        .calendar .days li {
+            z-index: 1;
+            cursor: pointer;
             position: relative;
+            margin-top: 30px;
         }
 
-        #pauseBtn,
-        #startBtn {
+        .days li.inactive {
+            color: #aaa;
+        }
+
+        .days li.active {
+            color: #fff;
+        }
+
+        .days li::before {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
+            content: "";
+            left: 50%;
+            top: 50%;
+            height: 40px;
+            width: 40px;
+            z-index: -1;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        button.splide__arrow.splide__arrow {
-            position: absolute;
-            bottom: 10px;
+        .days li.active::before {
+            background: #3859e5;
         }
 
-        button.splide__arrow.splide__arrow--prev {
-            top: 87%;
-            left: 18%;
-        }
-
-
-        button.splide__arrow.splide__arrow--next {
-            left: 25%;
-            bottom: 4%;
-        }
-
-        .splide__slide--clone.is-active {
-            background: unset !important
+        .days li:not(.active):hover::before {
+            background: #f2f2f2;
         }
 
     </style>
+
 </head>
 
 <body>
     @include('components.header')
 
     <!-- carousel -->
-    <div class="row w-100" style='background:#a0d9ef'>
-        <div class="col-md-8 p-3 ps-4" style=' box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;'>
-            <div class="container p-0">
-                <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators list-unstyled">
-                        <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
-                        <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
-                        <li data-bs-target="#myCarousel" data-bs-slide-to="2"></li>
-                    </ol>
+    <div class="row">
+        <div class="col-md-7">
+            <h1 class='text-primary'>Carousel</h1>
+        </div>
+        <div class="col-md-5">
+            <div class="calender-container d-flex" style='background:#2ECC71'>
+                <div style='padding:30px;text-align:center'>
+                    <h5 class='todays-date' style='font-size:60px;color:white'></h5>
+                    <h5 class='todays-monthandyear'></h5>
 
-                    <!-- Slides -->
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="https://images.pexels.com/photos/5913510/pexels-photo-5913510.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
-                                class="d-block w-100" alt="Temporary Image 1">
+                    <h2>Event</h2>
+                </div>
+
+
+                <div class="wrapper">
+                    <header>
+                        <p class="current-date"></p>
+                        <div class="icons">
+                            <span id="prev" class="material-symbols-rounded">
+                                < </span>
+                                    <span id="next" class="material-symbols-rounded">></span>
                         </div>
-                        <div class="carousel-item">
-                            <img src="https://images.pexels.com/photos/14384762/pexels-photo-14384762.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
-                                class="d-block w-100" alt="Temporary Image 2">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="https://images.pexels.com/photos/5372615/pexels-photo-5372615.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
-                                class="d-block w-100" alt="Temporary Image 3">
-                            <!-- <div class="carousel-caption">
-                    <h3>Slide 3</h3>
-                    <p>Temporary Image 3 Description</p>
-                </div> -->
-                        </div>
+                    </header>
+                    <div class="calendar">
+                        <ul class="weeks">
+                            <li>Sun</li>
+                            <li>Mon</li>
+                            <li>Tue</li>
+                            <li>Wed</li>
+                            <li>Thu</li>
+                            <li>Fri</li>
+                            <li>Sat</li>
+                        </ul>
+                        <ul class="days"></ul>
                     </div>
-
-                    <!-- Controls -->
-                    <a class="carousel-control-prev" href="#myCarousel" role="button" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#myCarousel" role="button" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </a>
                 </div>
             </div>
-
-        </div>
-        <div class="col-md-4 text-center">
-            <div class="col-md-12  my-4">
-                <a href="#" class="login">Login</a>
-            </div>
-            <div class="col-md-12">
-                <h1>Watch</h1>
-            </div>
-        </div>
-    </div>
-    <div class="row w-100 " style='background:#a0d9ef'>
-        <div class="row col-md-6 announcement">
-            <div class="slider">
-                <section class="splide">
-                    <div class="splide__slider">
-                        <div class="splide__track">
-                            <ul class="splide__list">
-                                <li class="splide__slide">Slide 01</li>
-                                <li class="splide__slide">Slide 02</li>
-                                <li class="splide__slide">Slide 03</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <button class="splide__toggle my-3" type="button">
-                        <span class="splide__toggle__play">Play</span>
-                        <span class="splide__toggle__pause">Pause</span>
-                    </button>
-                </section>
-            </div>
-        </div>
-        <div class="col-md-6"
-            style='height:60vh;background-repeat:no-repeat; background-image:url("https://github.githubassets.com/images/modules/site/home-campaign/lines-hero.svg")'>
-            <h1 class='text-dark'>clock</h1>
-
         </div>
 
-    </div>
 
 
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var splide = new Splide('.splide', {
-                direction: 'ttb',
-                height: '50vh',
-                perPage: 4,
-                autoplay: true,
-                wheel: true,
-                drag: 'free',
-                type: 'loop',
-                focus: 'center',
-                autoplay: 'play',
-                interval: 2000,
-                // pauseOnHover: false,
+        <script>
+            $('#myModal').on('shown.bs.modal', function () {
+                $('#myInput').trigger('focus')
+            })
+
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+        </script>
+        <script>
+            const daysTag = document.querySelector(".days"),
+                currentDate = document.querySelector(".current-date"),
+                todaysDate = document.querySelector(".todays-date"),
+                todaysMonthandyear = document.querySelector(".todays-monthandyear"),
+                prevButton = document.getElementById("prev"),
+                nextButton = document.getElementById("next");
+
+            // getting new date, current year, and month
+            let date = new Date(),
+                currYear = date.getFullYear(),
+                currMonth = date.getMonth();
+
+            // storing the full names of all months in an array
+            const months = ["January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December"
+            ];
+
+            const renderCalendar = () => {
+                let firstDayofMonth = new Date(currYear, currMonth, 1).getDay(),
+                    lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate(),
+                    lastDayofMonth = new Date(currYear, currMonth, lastDateofMonth).getDay(),
+                    lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate();
+                let liTag = "";
+
+                for (let i = firstDayofMonth; i > 0; i--) {
+                    liTag += `<li class="inactive">${lastDateofLastMonth - i + 1}</li>`;
+                }
+
+                for (let i = 1; i <= lastDateofMonth; i++) {
+                    let isToday = i === date.getDate() && currMonth === new Date().getMonth() && currYear ===
+                        new Date().getFullYear() ? "active" : "";
+                    liTag += `<li class="${isToday}">${i}</li>`;
+                }
+
+                for (let i = lastDayofMonth; i < 6; i++) {
+                    liTag += `<li class="inactive">${i - lastDayofMonth + 1}</li>`;
+                }
+                currentDate.innerText = `${months[currMonth]} ${currYear}`;
+                daysTag.innerHTML = liTag;
+
+                todaysDate.innerText = date.getDate();
+                todaysMonthandyear.innerText = `${months[currMonth]} ${currYear}`;
+            }
+
+            renderCalendar();
+
+            // Attach click event handlers to the previous and next buttons
+            prevButton.addEventListener("click", () => {
+                currMonth = currMonth - 1;
+                if (currMonth < 0) {
+                    currYear--;
+                    currMonth = 11;
+                }
+                renderCalendar();
             });
 
-            splide.mount();
-        });
+            nextButton.addEventListener("click", () => {
+                currMonth = currMonth + 1;
+                if (currMonth > 11) {
+                    currYear++;
+                    currMonth = 0;
+                }
+                renderCalendar();
+            });
 
-    </script>
+        </script>
+
 </body>
 
 </html>
