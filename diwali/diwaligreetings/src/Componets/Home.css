@@ -16,14 +16,6 @@
   );
 }
 
-.name {
-  position: relative;
-  top: -87px;
-  left: -80px;
-  border: 2px solid black;
-  border-radius: 10px;
-  width: 200px;
-}
 .base-lamp:before {
   content: "";
   position: absolute;
@@ -53,6 +45,15 @@
 }
 .cold-md-3 {
   transition: 6s ease-in-out; /* Add a 5-second delay */
+}
+.border {
+  background: #33333345;
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.row {
+  justify-content: space-evenly;
 }
 .shadow:before {
   content: "";
@@ -93,4 +94,22 @@
   color: white;
   border: 2px solid rgb(19, 222, 50);
   border-radius: 8px;
+}
+.row {
+  /* background: linear-gradient(45deg, #fffb3d, orange); */
+  background: #000000;
+}
+
+.name {
+  position: relative;
+  top: -10%;
+  left: -70%;
+  border: 2px solid white;
+  color: white;
+  border-radius: 10px;
+  width: 250px;
+}
+.name > h1 {
+  font-size: 30px;
+  font-weight: 400;
 }
