@@ -1,0 +1,173 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background-color-light: linear-gradient(
+    to right,
+    #1f4037,
+    #99f2c8
+  ); /* Light mode background color */
+
+  --side-drawer: rgb(31 64 55 / 88%);
+  --text-primary: #7269ef;
+}
+
+:root {
+  --text-primary: #7269ef;
+}
+
+.text-primary {
+  color: #7269ef;
+}
+
+.side-drawer {
+  background: var(--side-drawer);
+}
+
+body {
+  background: var(
+    --background-color-light
+  ); /* Default to light mode background */
+}
+
+.auth-bg {
+  background: linear-gradient(to right, #1f4037, #99f2c8);
+}
+
+.nav-bg {
+  background: linear-gradient(182deg, #1a2e29, #478568);
+}
+.login-img {
+  position: relative;
+  vertical-align: middle;
+  max-width: 200%;
+}
+@media (max-width: 991px) {
+  .loginbanner {
+    display: none;
+  }
+}
+
+/* navigation */
+ul li {
+  margin: 10px;
+  list-style: none;
+  gap: 20px;
+}
+.nav-bottom {
+  height: 40vh;
+}
+
+.text-success {
+  color: #0abb87 !important;
+}
+
+.fs-icons {
+  font-size: 25px;
+  color: white;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px; /* Adjust the width as needed */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Track color */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+  background-color: #0abb87;
+}
+
+.chat-bubble {
+  margin: 0px 30px;
+  position: relative;
+  animation: fadeIn 1s ease-in;
+  /* border-radius: 15px 15px 15px 2px;  */
+}
+
+.chat-bubble--left:before {
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid #7269ef;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #7269ef;
+  bottom: -10px;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: auto;
+}
+
+.chat-bubble--right:before {
+  border-left: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-top: 5px solid #36404a;
+  border-right: 5px solid #36404a;
+  bottom: -10px;
+  content: "";
+  right: 0;
+  position: absolute;
+  left: auto;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.secoundary {
+  background: #36404a;
+}
+
+.chatheader {
+  height: 10%;
+}
+
+.chatbody {
+  height: 80%;
+}
+
+.chatfooter {
+  height: 10%;
+}
+.text-primary {
+  color: #7269ef;
+}
+/* .recent-chats {
+  height: 90vh;
+} */
+/* .side-drawer {
+  background: rgb(31 64 55 / 88%);
+} */
+.contact-bg {
+  background: rgb(34 17 139 / 12%);
+}
+
+/* transition */
+.transition-height {
+  max-height: 0;
+  transition: max-height 2s ease-in-out;
+}
+
+/* Tailwind CSS classes */
+.duration-2000 {
+  transition-duration: 2000ms;
+}
+
+.transparent-bg {
+  background: rgb(248 250 252 / 12%);
+}
+
+.h-90-percent {
+  height: 95%;
+}
