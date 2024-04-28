@@ -1,109 +1,119 @@
 // hooks
 import { useCallback, useEffect, useState } from "react";
-import { hasCookie } from "cookies-next";
 
-// icons
-import { FaUserAstronaut } from "react-icons/fa";
-import { IoArchiveOutline, IoMoonOutline } from "react-icons/io5";
-import { RiUserSearchLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-import { HiOutlineUserGroup } from "react-icons/hi2";
-import { FiMessageCircle } from "react-icons/fi";
 
-// axios and components
-import SidebarSearch from "../components/SidebarSearch";
-
-// interfaces
 import { ChatGroup } from "../interfaces/interfaces";
-import GroupsDrawer from "../components/GroupsDrawer";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { getChats } from "../redux/chats/chatAction";
-import AllChats from "../components/AllChats";
+
+//components
+import GroupsDrawer from "../components/Models/GroupsModal";
 import MessageBox from "../components/MessageBox";
-import UserDrawer from "../components/UserDrawer";
 import NavComponents from "../components/navcomponents/NavComponents";
 
+//redux
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { signOut } from "../redux/auth/auth.action";
+import { getChats } from "../redux/chats/chatAction";
+import Navbar from "../components/navcomponents/Navbar";
+
 function Dashboard() {
-  // react hooks
-  const [chatData, setChatData] = useState<ChatGroup[] | undefined>(
-    useAppSelector((store) => store.chats.chats) || undefined
-  );
-  const [indivisualChat, setIndivisualChat] = useState<ChatGroup | undefined>(
+  //react hooks
+  const [isDark, setIsDark] = useState(() => {
+    const theme = localStorage.getItem("isDark");
+    return theme !== null ? JSON.parse(theme) : false;
+  });
+  const [chatData, setChatData] = useState<ChatGroup[] | []>([]);
+  const [selectedChat, setIndivisualChat] = useState<ChatGroup | undefined>(
     undefined
   );
-  const [activeMode, setActiveMode] = useState("chat");
   const Router = useNavigate();
-
-  // Redux hooks
-  const dispatch = useAppDispatch();
-
   // drawers
-
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [GroupdrawerOpen, setGroupDrawerOpen] = useState(false);
-  const [userdrawerOpen, setUserDrawerOpen] = useState(false);
+  //  nav bar
   const [navDrawer, setNavDrawer] = useState({
     chat: true,
     user: false,
     search: false,
     group: false,
+    contacts: false,
   });
-  console.log(navDrawer);
 
-  const toggleDrawer = useCallback(() => {
-    setDrawerOpen(!drawerOpen);
-  }, [drawerOpen]);
+  // redux
+  const userAuth = useAppSelector((store) => store.auth.isLogin);
+  const dispatch = useAppDispatch();
 
+  // fns
+  console.log(isDark);
+  // theme
+  const toggleTheme = () => {
+    localStorage.setItem("isDark", JSON.stringify(!isDark));
+    setIsDark(!isDark);
+    document.documentElement.classList.toggle("dark");
+  };
+
+  // chat all chat conversations
+
+  const getChatsData = async () => {
+    let res = await getChats("/api/");
+    console.log(res);
+    setChatData(res);
+  };
+
+  // update chats
+  const updateChats = (newChat: ChatGroup) => {
+    setChatData((prev) => {
+      if (prev === undefined) {
+        return [newChat];
+      } else {
+        return [newChat, ...prev];
+      }
+    });
+  };
+
+  // group drawer visibilty
   const toggleGroupDrawer = useCallback(() => {
     setGroupDrawerOpen(!GroupdrawerOpen);
   }, [GroupdrawerOpen]);
 
-  const toggleUserDrawer = useCallback(() => {
-    setUserDrawerOpen(!userdrawerOpen);
-  }, [userdrawerOpen]);
-
+  // navigation
   const toggleNavDrawer = (mode: string) => {
     setNavDrawer((prevState) => ({
       ...prevState,
       chat: mode === "chat" ? true : false,
       user: mode === "user" ? true : false,
       search: mode === "search" ? true : false,
+      contacts: mode === "contact" ? true : false,
       group: mode === "group" ? true : false,
     }));
-
-    setActiveMode(mode);
   };
 
-  // chat box data
-
+  // update single chat for chatbox
   const upchatIndividualChat = useCallback(
     (indiviualChat: ChatGroup | undefined) => {
-      console.log(indivisualChat);
       setIndivisualChat(indiviualChat);
     },
-    [indivisualChat]
+    [selectedChat]
   );
 
-  const userAuth = hasCookie("isLogin");
-  if (!userAuth) {
-    Router("/login");
-  }
-
-  const updateChats = () => {
-    setChatData(chatData);
-  };
-
-  //  get all chat message of specific user
-  const getAllMessage = async () => {
-    await dispatch<any>(getChats("/api/"));
-  };
-  const toggleTheme = () => {
-    document.documentElement.classList.toggle("dark");
+  // singout fn
+  const handleSignout = async () => {
+    await dispatch<any>(signOut());
   };
 
   useEffect(() => {
-    getAllMessage();
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    }
   }, []);
+  useEffect(() => {
+    getChatsData();
+  }, []);
+
+  useEffect(() => {
+    if (!userAuth && window.location.pathname !== "/login") {
+      Router("/login");
+    }
+  }, [userAuth]);
 
   return (
     <>
@@ -112,99 +122,29 @@ function Dashboard() {
         toggleGroupDrawer={toggleGroupDrawer}
         updateChats={updateChats}
       />
-      {/* <UserDrawer
-        userdrawerOpen={userdrawerOpen}
-        toggleUserDrawer={toggleUserDrawer}
-      /> */}
 
-      <div className="flex h-screen">
-        <div
-          className="w-1/12 h-full  dark:bg-black"
-          style={{ height: "100vh" }}
-        >
-          <nav className="navigation">
-            <div className="logo m-auto text-center">
-              <img
-                src="https://i.pinimg.com/564x/64/c5/21/64c521928bd358147d203b3a8ab3fe0f.jpg"
-                alt=""
-                width="50px"
-                className="m-auto pt-1 rounded-full"
-              />
-            </div>
-            <div
-              className="nav-group h-3/4 flex flex-col justify-around"
-              style={{ height: "80vh" }}
-            >
-              <div className="user-link text-center">
-                <button className="py-3">
-                  <FiMessageCircle
-                    className="fs-icons"
-                    onClick={() => toggleNavDrawer("chat")}
-                  />
-                </button>
+      <div className="flex dark:bg-black">
+        {/* navigation */}
 
-                <br />
-                <button className="py-3">
-                  <FaUserAstronaut
-                    className="fs-icons"
-                    onClick={() => toggleNavDrawer("user")}
-                  />
-                </button>
-                <br />
+        <Navbar
+          toggleNavDrawer={toggleNavDrawer}
+          toggleGroupDrawer={toggleGroupDrawer}
+          toggleTheme={toggleTheme}
+          isDark={isDark}
+        />
 
-                <button
-                  className="py-3"
-                  onClick={() => toggleNavDrawer("search")}
-                >
-                  <RiUserSearchLine className="fs-icons" />
-                </button>
-                {/* <br /> */}
-                {/* <button
-                  className="py-3"
-                  
-                  onClick={toggleUserDrawer}
-                >
-                  <RiUserSearchLine className="fs-icons" />
-                </button> */}
-
-                {/* <button></button> */}
-                <br />
-
-                <button className="py-3" onClick={toggleGroupDrawer}>
-                  <HiOutlineUserGroup className="fs-icons" />
-                </button>
-                <br />
-
-                <button className="py-3">
-                  <IoArchiveOutline className="fs-icons" />
-                </button>
-                <br />
-              </div>
-              <div className="theme text-center" onClick={toggleTheme}>
-                <button>
-                  <IoMoonOutline className="fs-icons" />
-                </button>
-              </div>
-            </div>
-          </nav>
+        <div className="h-screen md:w-1/3 border-3 shadow-right bg-orange-500 dark:bg-black">
+          <NavComponents
+            navDrawer={navDrawer}
+            upchatIndividualChat={upchatIndividualChat}
+            toggleNavDrawer={toggleNavDrawer}
+            chatData={chatData}
+            updateChats={updateChats}
+          />
         </div>
 
-        {/* <AllChats
-          chatData={chatData}
-          upchatIndividualChat={upchatIndividualChat}
-        /> */}
-
-        {/* <SidebarSearch
-          drawerOpen={drawerOpen}
-          toggleDrawer={toggleDrawer}
-          updateChats={updateChats}
-        /> */}
-        <div className="w-1/3 border-3 side-drawer dark:bg-black">
-          <NavComponents navDrawer={navDrawer} />
-        </div>
-
-        <div className="w-2/3 ">
-          <MessageBox indivisualChat={indivisualChat} />
+        <div className="w-2/3 h-screen  shadow-inner dark:bg-black">
+          <MessageBox selectedChat={selectedChat} />
         </div>
       </div>
     </>

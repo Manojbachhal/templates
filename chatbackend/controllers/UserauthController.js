@@ -42,6 +42,8 @@ const userLogin = async ({ email, password }) => {
 
     if (bcrypt.compareSync(password, user.password)) {
       userData = await userModal.findOne({ email }).select("-password");
+      // const pic = userData.pic;
+      // userData.pic = `${process.env.BASEURL}uploads/${pic}`;
       return { statusCode: 200, token: generateToken(user), user: userData };
     } else {
       return { statusCode: 401, message: "Incorrect password" };
@@ -78,9 +80,31 @@ const searchUser = async (req, res) => {
   // console.log(response);
   res.send(response);
 };
+
+const editDetails = async (req, res) => {
+  console.log("first");
+  const { name } = req.body;
+  const image = req.file;
+  const updateObject = {};
+  console.log(process.env.BASEURL);
+  if (name !== undefined && name !== "") {
+    updateObject.name = name;
+  }
+  if (image !== undefined && image !== "") {
+    updateObject.pic = image.filename;
+  }
+
+  let response = await User.findOneAndUpdate(
+    { _id: req.user._id },
+    updateObject,
+    { new: true }
+  ).select("-password");
+  return response;
+};
 module.exports = {
   userRegistration,
   userLogin,
   getUsers,
   searchUser,
+  editDetails,
 };

@@ -26,7 +26,8 @@ const accessChat = asyncHandler(async (req, res) => {
   });
 
   if (isChat.length > 0) {
-    res.send(isChat[0]);
+    // res.send(isChat[0]);
+    res.send({ message: "Chat already Exist" });
   } else {
     var chatData = {
       chatName: "sender",
@@ -84,21 +85,26 @@ const createGroup = asyncHandler(async (req, res) => {
   // pushing logged in user to group users list
   users.push(req.user);
 
-  try {
-    const groupchat = await Chat.create({
-      chatName: req.body.name,
-      users: users,
-      isGroupChat: true,
-      groupAdmin: req.user,
-    });
+  let existingGroup = await Chat.find({ chatName: req.body.name });
+  if (existingGroup.length > 0) {
+    res.send({ message: "Group already exist" });
+  } else {
+    try {
+      const groupchat = await Chat.create({
+        chatName: req.body.name,
+        users: users,
+        isGroupChat: true,
+        groupAdmin: req.user,
+      });
 
-    const fullGroupChat = await Chat.findOne({ _id: groupchat._id })
-      .populate("users", "-password")
-      .populate("groupAdmin", "-password");
+      const fullGroupChat = await Chat.findOne({ _id: groupchat._id })
+        .populate("users", "-password")
+        .populate("groupAdmin", "-password");
 
-    res.send(fullGroupChat);
-  } catch (error) {
-    res.status(400).send(new Error(error.message));
+      res.send(fullGroupChat);
+    } catch (error) {
+      res.status(400).send(new Error(error.message));
+    }
   }
 });
 

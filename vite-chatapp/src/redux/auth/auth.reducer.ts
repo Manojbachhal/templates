@@ -1,11 +1,13 @@
 import type { AuthActionTypes, User } from './auth.actionTypes';
-import { AUTH_LOADING, AUTH_SUCCESS, AUTH_ERROR, ROUTE_LOADING, CHANGE_PIC } from './auth.actionTypes';
+import { AUTH_LOADING, AUTH_SUCCESS, AUTH_ERROR, ROUTE_LOADING, CHANGE_PIC, AUTH_SIGNOUT } from './auth.actionTypes';
 
 interface AuthState {
   loading: boolean;
   user: User | null;
   error: boolean | null;
-  routeloading: boolean
+  routeloading: boolean;
+  isLogin:boolean;
+
 }
 
 const initialState: AuthState = {
@@ -13,6 +15,7 @@ const initialState: AuthState = {
   user: null,
   routeloading: false,
   error: false,
+  isLogin:false,
 };
 
 const authReducer = (state: AuthState = initialState, action: AuthActionTypes): AuthState => {
@@ -28,6 +31,7 @@ const authReducer = (state: AuthState = initialState, action: AuthActionTypes): 
         ...state,
         loading: false,
         user: action.payload as User,
+        isLogin:true,
         error: false,
         routeloading: false
       };
@@ -38,6 +42,13 @@ const authReducer = (state: AuthState = initialState, action: AuthActionTypes): 
         error: true,
         routeloading: false
       };
+    case AUTH_SIGNOUT:{
+     return {
+      ...state,
+      isLogin:false,
+     }
+      
+    };  
     case ROUTE_LOADING:
       return {
         ...state,

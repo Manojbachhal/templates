@@ -8,9 +8,6 @@ import { hasCookie } from "cookies-next";
 function Signup() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  function togglePasswordVisibility() {
-    setIsPasswordVisible((prevState) => !prevState);
-  }
   const [errors, setErrors] = useState({
     status: false,
     message: "",
@@ -20,6 +17,11 @@ function Signup() {
   const password = useRef<HTMLInputElement>(null);
   const confirmPassword = useRef<HTMLInputElement>(null);
   const name = useRef<HTMLInputElement>(null);
+
+  function togglePasswordVisibility() {
+    setIsPasswordVisible((prevState) => !prevState);
+  }
+
   useEffect(() => {
     if (hasCookie("isLogin")) {
       navigate("/");
@@ -34,11 +36,9 @@ function Signup() {
       confirmPassword.current &&
       password.current &&
       name.current &&
-      regex.test(email.current.value) &&
+      // regex.test(email.current.value) &&
       confirmPassword.current.value === password.current.value
     ) {
-      console.log(email.current.value, password.current.value);
-
       const formData = {
         name: name.current.value,
         email: email.current.value,
@@ -47,7 +47,7 @@ function Signup() {
 
       try {
         let response = await axios.post(
-          "http://localhost:3001/register",
+          "http://localhost:3001/users/register",
           formData
         );
         console.log(response);
@@ -57,6 +57,14 @@ function Signup() {
       } catch (error: any) {
         // setalreadyExist(true);
       }
+    } else if (password.current?.value !== confirmPassword.current?.value) {
+      console.log("test");
+      setErrors({
+        ...errors,
+        status: true,
+        message: "Password doesnt match confirm password",
+      });
+      return;
     } else {
       if (email.current)
         console.error("Invalid email address:", email.current.value);
@@ -64,7 +72,7 @@ function Signup() {
   };
 
   return (
-    <div className="auth-bg py-8">
+    <div className="auth-bg py-8 h-screen flex items-center justify-center   *:">
       <div className="container mx-auto px-0">
         <div className="md:flex">
           <div className="col-span-1 md:w-1/4 lg:col-span-1 xl:col-span-1">
@@ -93,13 +101,30 @@ function Signup() {
                       Signup in to continue to ChatSphere.
                     </p>
                     {errors.status && (
-                      <p className="text-danger font-semibold">
+                      <p className="text-red-400 mt-3 font-semibold">
                         {errors.message}
                       </p>
                     )}
                   </div>
 
                   <form className="max-w-sm mx-auto" onSubmit={signupSubmit}>
+                    <div className="mb-3">
+                      <label
+                        htmlFor="email"
+                        className="block mb-2 text-lg text-start font-light text-gray-900 dark:text-white"
+                      >
+                        Your Name
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        className="w-full px-4 py-2 text-md border border-gray-300 rounded outline-none focus:ring-blue-500 focus:border-blue-500 focus:ring-1"
+                        placeholder="Enter your name"
+                        required
+                        ref={name}
+                      />
+                    </div>
+
                     <div className="mb-3">
                       <label
                         htmlFor="email"
@@ -113,6 +138,7 @@ function Signup() {
                         className="w-full px-4 py-2 text-md border border-gray-300 rounded outline-none focus:ring-blue-500 focus:border-blue-500 focus:ring-1"
                         placeholder="name@gmail.com"
                         required
+                        ref={email}
                       />
                     </div>
 
@@ -127,6 +153,7 @@ function Signup() {
                         <input
                           type={isPasswordVisible ? "text" : "password"}
                           placeholder="Password"
+                          ref={password}
                           className="w-full px-4 py-2 text-base border border-gray-300 rounded outline-none focus:ring-blue-500 focus:border-blue-500 focus:ring-1"
                         />
                         <button

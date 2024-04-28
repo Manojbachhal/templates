@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { hasCookie } from "cookies-next";
 import { useAppDispatch } from "../redux/hooks";
 import { authenticateUser } from "../redux/auth/auth.action";
+import Loading from "../components/svg/Loading";
+import { DiVim } from "react-icons/di";
 
 function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -13,6 +15,7 @@ function Login() {
     status: false,
     message: "",
   });
+  const [loginSubmitLoader, setLoginSubmitLoader] = useState(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -28,11 +31,13 @@ function Login() {
     success: boolean;
   }
   const handleResponse = (message: string, status: boolean) => {
+    setLoginSubmitLoader(false);
     setErrors({ status, message });
   };
 
   const loginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoginSubmitLoader(true);
     if (email.current && password.current) {
       const credentials = {
         email: email.current.value,
@@ -52,13 +57,13 @@ function Login() {
   });
 
   return (
-    <div className="auth-bg py-8">
-      <div className="container mx-auto px-0">
+    <div className="auth-bg py-8 h-screen flex items-center justify-center">
+      <div className="container mx-auto  px-0">
         <div className="md:flex">
-          <div className="col-span-1 md:w-1/4 lg:col-span-1 xl:col-span-1">
+          <div className="col-span-1 md:w-1/3 lg:col-span-1 xl:col-span-1">
             <div className="p-4 pb-0 lg:p-5 lg:pb-0 auth-logo-section">
               <div className="text-white">
-                <h3 className="flex text-4xl font-thin">
+                <h3 className="flex text-4xl font-thin pr-5">
                   ChatSphere
                   <IoIosHeart className="text-red-600 h-6 w-6 mr-2" />
                 </h3>
@@ -68,7 +73,7 @@ function Login() {
               </div>
             </div>
           </div>
-          <div className="col-span-1 m-2 rounded-md md:w-3/4 lg:col-span-1 xl:col-span-1 h-100 bg-white">
+          <div className="col-span-1 m-2 rounded-md md:w-3/4  lg:col-span-1 xl:col-span-1 h-100 bg-white">
             <div className="m-3">
               <div className="flex flex-col h-full px-4 pt-4 bg-light rounded text-center">
                 <div className="my-auto">
@@ -90,7 +95,7 @@ function Login() {
                   </div>
 
                   <form className="max-w-sm mx-auto" onSubmit={loginSubmit}>
-                    <div className="mb-5">
+                    <div className="mb-3">
                       <label
                         htmlFor="email"
                         className="block mb-2 text-lg text-start font-light text-gray-900 dark:text-white"
@@ -186,9 +191,15 @@ function Login() {
 
                     <button
                       type="submit"
-                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      className="w-32 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     >
-                      Submit
+                      {!loginSubmitLoader ? (
+                        "submit"
+                      ) : (
+                        <div className="flex justify-center">
+                          <Loading /> loading
+                        </div>
+                      )}
                     </button>
                   </form>
 

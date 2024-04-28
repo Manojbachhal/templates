@@ -5,18 +5,11 @@ import { getCookie } from "cookies-next";
 import { getUsers, getUsersDebouncing } from "../redux/users/getUsersAction";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getChats } from "../redux/chats/chatAction";
-import Loader from "./Loader";
+import Loader from "./svg/Loading";
+import { GrUserAdd } from "react-icons/gr";
 
-interface SidebarSearch {
-  updateChats: () => void;
-}
-
-function SidebarSearch({ updateChats }: SidebarSearch) {
-  const [chatData, setChatData] = useState<ChatGroup[] | undefined>(
-    useAppSelector((store) => store.chats.chats) || undefined
-  );
+function SidebarSearch() {
   let Loading = useAppSelector((store) => store.user.loading);
-  // console.log(Loading);
   const [allUsers, setAllusers] = useState<User[]>();
   const searchRef = useRef<HTMLInputElement>(null);
   let debouncingId: NodeJS.Timeout | undefined = undefined;
@@ -58,11 +51,9 @@ function SidebarSearch({ updateChats }: SidebarSearch) {
     setAllusers(usersData);
   };
 
-  // start a chat
-
-  const startChat = async (id: string) => {
+  const addContact = async (id: string) => {
     try {
-      const url = `http://localhost:3001/api/`;
+      const url = `http://localhost:3001/api/contacts`;
       let token = getCookie("Token");
       const res = await axios.post(
         url,
@@ -73,52 +64,27 @@ function SidebarSearch({ updateChats }: SidebarSearch) {
           },
         }
       );
-      // console.log(res.status === 200);
-      if (res.status === 200) {
-        dispatch<any>(getChats("/api/")).then(() => updateChats());
-      }
-      // toggleDrawer();
 
-      // console.log(res);
+      console.log(res);
+      // if (res.status === 200) {
+      //    updateChats(res.data);
+      // }
     } catch (error) {}
   };
 
   useEffect(() => {
-    // if (drawerOpen) {
     getAllUsers();
-    // }
   }, []);
 
   return (
-    <div className="m-2 mt-5 transparent-bg h-90-percent">
-      <div className="transparent-bg ps-2 h-20 flex align-items-center">
+    <div className="p-2 h-90-percent">
+      <div className="transparent-bg h-20 flex align-items-center">
         <h5
           id="drawer-label"
           className="inline-flex px-3 text-3xl text-white items-center mb-4 font-semibold "
         >
           Search Users
         </h5>
-        <button
-          type="button"
-          className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white"
-        >
-          <svg
-            className="w-3 h-3 text-gray-700"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 14"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-            />
-          </svg>
-          <span className="sr-only">Close menu</span>
-        </button>
       </div>
 
       <div className="p-4">
@@ -169,9 +135,8 @@ function SidebarSearch({ updateChats }: SidebarSearch) {
           {allUsers?.map((user) => {
             return (
               <div
-                className="flex w-5/6 m-auto items-center mb-3 p-2 rounded contact-bg text-white hover:cursor-pointer"
+                className="flex w-5/6 m-auto items-center mb-3 p-2 rounded contact-bg text-white hover:cursor-pointer glass "
                 key={user._id}
-                onClick={() => startChat(user._id)}
               >
                 <div className="w-1/4">
                   <img
@@ -188,7 +153,15 @@ function SidebarSearch({ updateChats }: SidebarSearch) {
                     <span className="text-blue-400">{user.email}</span>
                   </p>
                 </div>
-                <div></div>
+                <div className="text-center bg-green-400 ms-3 rounded-full px-2 p-1 m-auto shadow-2xl ">
+                  <button
+                    onClick={() => addContact(user._id)}
+                    className="tooltip"
+                    data-tip="Add contact"
+                  >
+                    <GrUserAdd className="" />
+                  </button>
+                </div>
               </div>
             );
           })}

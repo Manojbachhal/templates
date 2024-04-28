@@ -1,9 +1,8 @@
-import React, { useCallback, useState } from "react";
-import { useAppSelector } from "../../redux/hooks";
 import { ChatGroup } from "../../interfaces/interfaces";
-import AllChats from "../AllChats";
+import AllChats from "../chatComponents/AllChats";
 import UserDrawer from "../UserDrawer";
-import SidebarSearch from "../SidebarSearch";
+import UserSearch from "../SearchUsers";
+import Contacts from "../Contacts";
 
 interface Props {
   navDrawer: {
@@ -11,35 +10,21 @@ interface Props {
     user: boolean;
     search: boolean;
     group: boolean;
+    contacts: boolean;
   };
-  // toggleNavDrawer: () => void;
+  upchatIndividualChat: (indiviualChat: ChatGroup | undefined) => void;
+  toggleNavDrawer: (val: string) => void;
+  updateChats: (val: ChatGroup) => void;
+  chatData: ChatGroup[];
 }
 
-function NavComponents({ navDrawer }: Props) {
-  //
-  const [chatData, setChatData] = useState<ChatGroup[] | undefined>(
-    useAppSelector((store) => store.chats.chats) || undefined
-  );
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [GroupdrawerOpen, setGroupDrawerOpen] = useState(false);
-
-  const [indivisualChat, setIndivisualChat] = useState<ChatGroup | undefined>(
-    undefined
-  );
-  const toggleDrawer = useCallback(() => {
-    setDrawerOpen(!drawerOpen);
-  }, [drawerOpen]);
-  const upchatIndividualChat = useCallback(
-    (indiviualChat: ChatGroup | undefined) => {
-      console.log(indivisualChat);
-      setIndivisualChat(indiviualChat);
-    },
-    [indivisualChat]
-  );
-  const updateChats = () => {
-    setChatData(chatData);
-  };
-
+function NavComponents({
+  navDrawer,
+  upchatIndividualChat,
+  toggleNavDrawer,
+  updateChats,
+  chatData,
+}: Props) {
   // Determine which mode is active
   let activeMode = "";
   if (navDrawer.chat) {
@@ -48,6 +33,8 @@ function NavComponents({ navDrawer }: Props) {
     activeMode = "user";
   } else if (navDrawer.search) {
     activeMode = "search";
+  } else if (navDrawer.contacts) {
+    activeMode = "contact";
   } else if (navDrawer.group) {
     activeMode = "group";
   }
@@ -64,9 +51,15 @@ function NavComponents({ navDrawer }: Props) {
     case "user":
       return <UserDrawer />;
     case "search":
-      return <SidebarSearch updateChats={updateChats} />;
-    case "group":
-      return <div>Group Component</div>;
+      return (
+        <UserSearch
+          updateChats={updateChats}
+          toggleNavDrawer={toggleNavDrawer}
+        />
+      );
+    case "contact":
+      return <Contacts updateChats={updateChats} />;
+
     default:
       return null;
   }

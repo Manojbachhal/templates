@@ -1,7 +1,8 @@
 import type { Dispatch } from "redux";
 import type { AxiosError, AxiosResponse } from "axios";
 import axios from "axios";
-export const baseUrl: string | undefined = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_BASE_URI;
+export const baseUrl: string | undefined =
+  import.meta.env.VITE_BASE_URL || import.meta.env.VITE_BASE_URI;
 
 import type {
   AuthActionTypes,
@@ -14,8 +15,8 @@ import {
   AUTH_SUCCESS,
   AUTH_ERROR,
   ROUTE_LOADING,
+  AUTH_SIGNOUT,
 } from "./auth.actionTypes";
-
 
 import { setCookie, deleteCookie } from "cookies-next";
 export const authenticateUser =
@@ -28,24 +29,23 @@ export const authenticateUser =
     try {
       const res: AxiosResponse<UserData> = await axios.post(
         `${baseUrl}/users/login`,
-        credentials,
+        credentials
       );
 
       const expirationTime = new Date();
-      expirationTime.setDate(expirationTime.getDate() + 2); 
-      
-      setCookie('Token', res.data.token, {
-        expires: expirationTime,   
+      expirationTime.setDate(expirationTime.getDate() + 2);
+
+      setCookie("Token", res.data.token, {
+        expires: expirationTime,
       });
-      
-      setCookie('isLogin', true, {
-        expires: expirationTime, 
+
+      setCookie("isLogin", true, {
+        expires: expirationTime,
       });
 
       // calling reducer
       dispatch({ type: AUTH_SUCCESS, payload: res.data.user });
       handleResponse("Sign in successful!", false);
-
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
@@ -58,6 +58,16 @@ export const authenticateUser =
       }
       dispatch({ type: AUTH_ERROR });
     }
+  };
+
+export const signOut =
+  () =>
+  async (dispatch: Dispatch<AuthActionTypes>): Promise<void> => {
+    try {
+      dispatch({ type: AUTH_SIGNOUT, undefined });
+      deleteCookie("isLogin");
+      deleteCookie("Token");
+    } catch (error) {}
   };
 
 // export const getUser =
@@ -93,4 +103,3 @@ export const authenticateUser =
 
 //   return { message: "Logged out successfully" };
 // };
-

@@ -14,7 +14,6 @@ function ChatHeaderDrawer({
   togglechatHeaderDrawer,
   indivisualChat,
 }: Pros) {
-  console.log(indivisualChat);
   return (
     <div
       className={

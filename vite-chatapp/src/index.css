@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --background-color-light: linear-gradient(
-    to right,
-    #1f4037,
-    #99f2c8
-  ); /* Light mode background color */
+  --side-drawer: linear-gradient(
+    45deg,
+    #08487ce0,
+    #1aa866,
+    rgba(152, 198, 27, 0.688)
+  );
 
-  --side-drawer: rgb(31 64 55 / 88%);
   --text-primary: #7269ef;
 }
 
@@ -21,14 +21,8 @@
   color: #7269ef;
 }
 
-.side-drawer {
-  background: var(--side-drawer);
-}
-
-body {
-  background: var(
-    --background-color-light
-  ); /* Default to light mode background */
+.light {
+  /* background: var(--side-drawer); */
 }
 
 .auth-bg {
@@ -65,11 +59,14 @@ ul li {
 
 .fs-icons {
   font-size: 25px;
-  color: white;
+  /* color: white; */
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 4px; /* Adjust the width as needed */
+  width: 0px; /* Adjust the width as needed */
+}
+.recent-chats:hover.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -89,9 +86,36 @@ ul li {
 .chat-bubble {
   margin: 0px 30px;
   position: relative;
-  animation: fadeIn 1s ease-in;
-  /* border-radius: 15px 15px 15px 2px;  */
+  animation: fadeIn 0.5s ease-in;
 }
+/* .slide-right,
+.slide-left {
+  overflow: hidden !important;
+  width: 100%;
+}
+
+.slide-left {
+  animation: 3s slide-left;
+}
+@keyframes slide-left {
+  from {
+    margin-left: 100%;
+  }
+  to {
+    margin-left: 0%;
+  }
+}
+.slide-right {
+  animation: 3s slide-right;
+}
+@keyframes slide-right {
+  from {
+    margin-left: -100%;
+  }
+  to {
+    margin-left: 0%;
+  }
+} */
 
 .chat-bubble--left:before {
   border-bottom: 5px solid transparent;
@@ -103,6 +127,9 @@ ul li {
   left: 0;
   position: absolute;
   right: auto;
+}
+.primary {
+  background: #7269ef;
 }
 
 .chat-bubble--right:before {
@@ -138,7 +165,7 @@ ul li {
 }
 
 .chatfooter {
-  height: 10%;
+  height: 8%;
 }
 .text-primary {
   color: #7269ef;
@@ -169,5 +196,18 @@ ul li {
 }
 
 .h-90-percent {
-  height: 95%;
+  height: 100%;
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loader {
+  animation: rotate 1s linear infinite;
+  transform-origin: center; /* Specify the center of rotation */
 }
