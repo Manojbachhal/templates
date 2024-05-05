@@ -58,7 +58,9 @@ function NavComponents({
         />
       );
     case "contact":
-      return <Contacts updateChats={updateChats} />;
+      return (
+        <Contacts updateChats={updateChats} toggleNavDrawer={toggleNavDrawer} />
+      );
 
     default:
       return null;

@@ -30,7 +30,7 @@ const Navbar = ({
 }: props) => {
   return (
     <>
-      <div className="h-screen overflow-y-hidden overflow-x-hidden sm:hidden xsm md:flex flex-col justify-between bg-base-200">
+      <div className="h-screen overflow-y-hidden overflow-x-hidden sm:hidden xsm md:flex flex-col justify-between  transparent-bg ">
         <ul className="menu menu-vertical">
           <li>
             <div className="avatar placeholder">

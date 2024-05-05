@@ -100,11 +100,11 @@ function MessageBox({ selectedChat }: indivisualChat) {
   return (
     <>
       {selectedChat ? (
-        <div className="flex h-full">
-          <div className={`p-2 ${chatHeaderDrawer ? "w-2/3" : "w-full"}`}>
+        <div className="flex shadow-2xl ps-2 h-full">
+          <div className={` ${chatHeaderDrawer ? "w-2/3" : "w-full"}`}>
             {/* chat header */}
             <div
-              className="flex bg-blue-600 dark:bg-transparent chatheader border-b-4 border-green-500 hover:cursor-pointer p-2"
+              className="flex dark:bg-transparent chatheader border-b-4 border-green-500 hover:cursor-pointer p-2"
               onClick={togglechatHeaderDrawer}
               style={{ height: "12%" }}
             >
@@ -146,7 +146,7 @@ function MessageBox({ selectedChat }: indivisualChat) {
 
             {/* chat body */}
             <div
-              className="chatbody custom-scrollbar overflow-y-scroll scroll-snap-y-container flex flex-col bg-white"
+              className="chatbody bg-transparent custom-scrollbar overflow-y-scroll scroll-snap-y-container flex flex-col "
               id="chatBox"
             >
               {Allmessages.map((currentMsg: Message) => {
@@ -182,23 +182,24 @@ function MessageBox({ selectedChat }: indivisualChat) {
             </div>
 
             {/* chat footer */}
-            <div className="chatfooter my-auto shadow-lg ">
+            <div
+              className="chatfooter transparent-bg px-2 flex items-stretch rounded-full"
+              style={{ boxShadow: " gray 0px 8px 24px" }}
+            >
               <form
                 action=""
-                className="flex my-auto"
+                className="flex items-stretch w-full"
                 onSubmit={handleMessageSend}
               >
                 <input
                   type="text"
                   ref={msgRef}
-                  className="px-2 w-5/6 focus:outline-none bg-slate-200 "
+                  placeholder="Write Message"
+                  className="flex-1 px-2 focus:outline-none bg-transparent placeholder-blue-500  dark:placeholder-gray-500 "
                 />
-                <div className="border-2 w-1/6 bg-slate-100">
-                  <button
-                    type="submit"
-                    className="rounded-full m-1 p-1 bg-blue-500"
-                  >
-                    <PiNavigationArrow className="transform rotate-90 text-white text-2xl" />
+                <div className="border-l-2 w-16 flex items-center justify-center">
+                  <button type="submit" className="rounded-full bg-blue-500">
+                    <PiNavigationArrow className="transform rotate-90 text-white text-3xl p-1" />
                   </button>
                 </div>
               </form>
@@ -218,7 +219,7 @@ function MessageBox({ selectedChat }: indivisualChat) {
           </div>
         </div>
       ) : (
-        <div className="transparent-bg h-full p-2">
+        <div className="shadow-2xl transparent-bg h-full p-2">
           <div className="my-auto  ">
             <h1 className="text-5xl text-blue-700 text-center">
               Click a chat to start a conversation

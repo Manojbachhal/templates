@@ -8,7 +8,12 @@ import { getChats } from "../redux/chats/chatAction";
 import Loader from "./svg/Loading";
 import { GrUserAdd } from "react-icons/gr";
 
-function SidebarSearch() {
+interface props {
+  toggleNavDrawer: (val: string) => void;
+  updateChats: (val: ChatGroup) => void;
+}
+
+function UserSearch({ toggleNavDrawer }: props) {
   let Loading = useAppSelector((store) => store.user.loading);
   const [allUsers, setAllusers] = useState<User[]>();
   const searchRef = useRef<HTMLInputElement>(null);
@@ -66,9 +71,9 @@ function SidebarSearch() {
       );
 
       console.log(res);
-      // if (res.status === 200) {
-      //    updateChats(res.data);
-      // }
+      if (res.status === 200) {
+        toggleNavDrawer("contact");
+      }
     } catch (error) {}
   };
 
@@ -171,4 +176,4 @@ function SidebarSearch() {
   );
 }
 
-export default React.memo(SidebarSearch);
+export default React.memo(UserSearch);

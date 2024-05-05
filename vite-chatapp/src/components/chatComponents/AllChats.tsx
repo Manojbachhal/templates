@@ -23,7 +23,7 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
   const currentUser = useAppSelector((store: any) => store.auth.user);
 
   return (
-    <div className="p-2 mx-1 transparent-bg dark:bg-stone-900 h-full overflow-hidden">
+    <div className="p-2 mx-1 transparent-bg h-full overflow-hidden">
       <div
         className="pt-2 flex transparent-bg align-items-center"
         style={{ height: "12%" }}
@@ -53,7 +53,7 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
 
                   <div className="ps-2">
                     <p className="px-2 text-white uppercase">{chat.chatName}</p>
-                    <p className="px-2 text-sm text-orange-600 dark:text-blue-600 ">
+                    <p className="px-2 text-sm text-gray-600 dark:text-blue-600 ">
                       {chat.latestMessage?.content}
                     </p>
                   </div>
@@ -85,7 +85,7 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
                             <p className="px-2 text-white uppercase">
                               {user.name}
                             </p>
-                            <p className="px-2 text-sm text-orange-600 dark:text-blue-600 ">
+                            <p className="px-2 text-sm text-gray-600 dark:text-blue-600 ">
                               {chat.latestMessage?.content}
                             </p>
                           </div>
