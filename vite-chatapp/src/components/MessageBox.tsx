@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getMessages, sendMessages } from "../redux/chats/chatAction";
 import ChatDetails from "./ChatDetails";
 import { io } from "socket.io-client";
-
+import EmojiPicker from 'emoji-picker-react';
 interface indivisualChat {
   selectedChat: ChatGroup | undefined;
 }
@@ -19,7 +19,7 @@ function MessageBox({ selectedChat }: indivisualChat) {
   // react hooks
   const [chatHeaderDrawer, setChatheaderDrawer] = useState(false);
   const [chatDetails, setChatDetails] = useState(true);
-
+  const [emoji,setEmoji]=useState(false);
   //  redux
   const [Allmessages, setAllmessages] = useState<Message[]>([]);
   const currentUser = useAppSelector((store: any) => store.auth.user);
@@ -27,7 +27,9 @@ function MessageBox({ selectedChat }: indivisualChat) {
   // form ref and fn
   const msgRef = useRef<HTMLInputElement>(null);
   const chatBodyRef = useRef<HTMLDivElement>(null);
-
+  const handleEmoji= ()=>{
+    setEmoji(!emoji)
+  }
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", currentUser);
@@ -107,7 +109,8 @@ function MessageBox({ selectedChat }: indivisualChat) {
               className="flex dark:bg-transparent chatheader border-b-4 border-green-500 hover:cursor-pointer p-2"
               onClick={togglechatHeaderDrawer}
               style={{ height: "12%" }}
-            >
+              >
+             
               {selectedChat &&
               "isGroupChat" in selectedChat &&
               selectedChat.isGroupChat ? (
@@ -152,30 +155,38 @@ function MessageBox({ selectedChat }: indivisualChat) {
               {Allmessages.map((currentMsg: Message) => {
                 return (
                   <>
-                    <div
-                      key={currentMsg.sender._id}
-                      className={`flex pt-5 justify-end ${
-                        currentUser && currentUser._id == currentMsg.sender._id
-                          ? "text-red-950 flex-row slide-left"
-                          : "flex-row-reverse slide-left"
-                      }`}
-                    >
-                      <img
-                        src={currentMsg.sender.pic}
-                        alt=""
-                        className="w-8 mt-2 rounded-full order-2"
-                      />
-                      <div
-                        className={`order-1 px-5 py-2 text-white text-justify chat-bubble ${
-                          currentUser &&
-                          currentUser._id == currentMsg.sender._id
-                            ? "chat-bubble--right secoundary"
-                            : "chat-bubble--left primary"
-                        }`}
-                      >
-                        {currentMsg.content}
+                  {
+                    currentUser._id !== currentMsg.sender._id?  <div className="chat chat-start">
+                    <div className="chat-image avatar">
+                      <div className="w-10 rounded-full">
+                        <img alt="Tailwind CSS chat bubble component" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
                       </div>
                     </div>
+                    <div className="chat-header">
+                    {currentMsg.sender.name}
+                     
+                      {/* <time className="text-xs opacity-50">12:45</time> */}
+                    </div>
+                    <div className="chat-bubble">{currentMsg.content}</div>
+                    {/* <div className="chat-footer opacity-50">
+                      Delivered
+                    </div> */}
+                  </div>: <div className="chat chat-end">
+                        <div className="chat-image avatar">
+                          <div className="w-10 rounded-full">
+                            <img alt="Tailwind CSS chat bubble component" src={currentMsg.sender.pic} />
+                          </div>
+                        </div>
+                        <div className="chat-header">
+                        {currentMsg.sender.name}
+                          {/* <time className="text-xs opacity-50">12:46</time> */}
+                        </div>
+                        <div className="chat-bubble bg-blue-500">{currentMsg.content}</div>
+                        
+                        {/* <div className="chat-footer opacity-50"> Seen at 12:46</div> */}
+                      </div>
+                  }
+                    
                   </>
                 );
               })}
@@ -183,21 +194,25 @@ function MessageBox({ selectedChat }: indivisualChat) {
 
             {/* chat footer */}
             <div
-              className="chatfooter transparent-bg px-2 flex items-stretch rounded-full"
+              className="transparent-bg w-3/4 m-auto px-2 flex items-stretch rounded-full"
               style={{ boxShadow: " gray 0px 8px 24px" }}
             >
+               
               <form
                 action=""
-                className="flex items-stretch w-full"
+                className="flex items-stretch py-2.5 w-full" 
                 onSubmit={handleMessageSend}
               >
                 <input
                   type="text"
                   ref={msgRef}
                   placeholder="Write Message"
-                  className="flex-1 px-2 focus:outline-none bg-transparent placeholder-blue-500  dark:placeholder-gray-500 "
+                  className="flex-1 mx-auto px-2 focus:outline-none bg-transparent placeholder-blue-500  dark:placeholder-gray-500 "
                 />
+                <EmojiPicker open={emoji} reactionsDefaultOpen={true} style={{position:'absolute',bottom:'10%',right:'9%'}} />
                 <div className="border-l-2 w-16 flex items-center justify-center">
+                  
+                  <button className={`rounded-full p-1 ${emoji?"bg-blue-200":"bg-blue-500"} `} onClick={handleEmoji} > 😊 </button>
                   <button type="submit" className="rounded-full bg-blue-500">
                     <PiNavigationArrow className="transform rotate-90 text-white text-3xl p-1" />
                   </button>
@@ -227,9 +242,11 @@ function MessageBox({ selectedChat }: indivisualChat) {
             <IoChatbubblesOutline className="text-8xl m-auto mt-4 text-blue-700" />
           </div>
         </div>
+       
       )}
     </>
   );
 }
 
 export default MessageBox;
+// https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg
