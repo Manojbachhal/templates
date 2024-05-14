@@ -1,8 +1,4 @@
-import { RiUserSearchLine } from "react-icons/ri";
-import { AiOutlineUsergroupAdd } from "react-icons/ai";
-
-import { IoMoonOutline } from "react-icons/io5";
-import { LiaSignOutAltSolid } from "react-icons/lia";
+import gsap from "gsap";
 import { FcSms } from "react-icons/fc";
 import { FcContacts } from "react-icons/fc";
 import { FcPortraitMode } from "react-icons/fc";
@@ -13,7 +9,8 @@ import logoutIcon from "../../data/exit.png";
 
 // images
 import logo from "../../data/logo-no-background.png";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { AiOutlineUsergroupAdd } from "react-icons/ai";
 
 interface props {
   toggleNavDrawer: (val: string) => void;
@@ -22,17 +19,46 @@ interface props {
   isDark: boolean;
 }
 
+
 const Navbar = ({
   toggleNavDrawer,
   toggleGroupDrawer,
   toggleTheme,
   isDark,
 }: props) => {
+
+  let logoRef = useRef(null);
+  let FcSmsRef = useRef(null);
+  let FcContactsRef = useRef(null);
+  let GroupRef = useRef(null);
+  let usersRef = useRef(null);
+  let userInfoRef = useRef(null);
+
+useEffect(()=>{
+
+  const animation = gsap.to(logoRef.current,{
+    duration: 1,
+    rotate:360,
+    ease: "power2.inOut",
+  })
+
+  const navAnimation = gsap.from([FcSmsRef.current,FcContactsRef.current,GroupRef.current,usersRef.current,userInfoRef.current],{
+    duration:1,
+    x:100,
+    stagger:0.3,
+    
+  })
+  return ()=>{
+    animation.kill();
+    navAnimation.kill();
+  }
+
+},[])
   return (
     <>
       <div className="h-screen overflow-y-hidden overflow-x-hidden sm:hidden xsm md:flex flex-col justify-between  transparent-bg ">
         <ul className="menu menu-vertical">
-          <li>
+          <li ref={logoRef}>
             <div className="avatar placeholder">
               <div className="logo m-auto text-center">
                 <img
@@ -44,7 +70,7 @@ const Navbar = ({
               </div>
             </div>
           </li>
-          <li>
+          <li ref={FcSmsRef}>
             <button
               className="py-3 tooltip m-auto hover:bg-transparent focus:outline-none"
               style={{
@@ -56,10 +82,10 @@ const Navbar = ({
               data-tip="Chats"
               onClick={() => toggleNavDrawer("chat")}
             >
-              <FcSms className="fs-icons " />
+              <FcSms className="lg:text-4xl md:text-2xl" />
             </button>
           </li>
-          <li>
+          <li  ref={FcContactsRef}>
             <button
               className="py-3 tooltip m-auto hover:bg-transparent focus:outline-none"
               style={{
@@ -71,10 +97,10 @@ const Navbar = ({
               data-tip="Contacts"
               onClick={() => toggleNavDrawer("contact")}
             >
-              <FcContacts className="fs-icons" />
+              <FcContacts className="lg:text-4xl md:text-2xl" />
             </button>
           </li>
-          <li>
+          <li ref={GroupRef}>
             <button
               className="py-3 tooltip m-auto hover:bg-transparent focus:outline-none"
               style={{
@@ -86,10 +112,10 @@ const Navbar = ({
               data-tip="All Users"
               onClick={() => toggleNavDrawer("search")}
             >
-              <img src={userSearchLogo} alt="" style={{ width: "25px" }} />
+              <img src={userSearchLogo} alt="" style={{ width: "25px" }}  />
             </button>
           </li>
-          <li>
+          <li ref={usersRef}>
             <button
               className="py-3 tooltip m-auto hover:bg-transparent focus:outline-none"
               style={{
@@ -101,12 +127,12 @@ const Navbar = ({
               data-tip="Create Group"
               onClick={() => toggleGroupDrawer()}
             >
-              <img src={createGroupLogo} alt="" style={{ width: "25px" }} />
+              {/* <img src={createGroupLogo} alt="" style={{ width: "25px" }} /> */}
 
-              {/* <AiOutlineUsergroupAdd className="fs-icons" /> */}
+              <AiOutlineUsergroupAdd className="fs-icons text-green-400 " />
             </button>
           </li>
-          <li>
+          <li ref={userInfoRef}>
             <button
               className="py-3 tooltip m-auto hover:bg-transparent focus:outline-none"
               style={{
@@ -118,7 +144,7 @@ const Navbar = ({
               data-tip="user Info"
               onClick={() => toggleNavDrawer("user")}
             >
-              <FcPortraitMode className="fs-icons" />
+              <FcPortraitMode  className="lg:text-4xl md:text-2xl" />
             </button>
           </li>
         </ul>
