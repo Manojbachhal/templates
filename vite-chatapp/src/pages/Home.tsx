@@ -7,7 +7,7 @@ import { ChatGroup } from "../interfaces/interfaces";
 
 //components
 import GroupsDrawer from "../components/Models/GroupsModal";
-import MessageBox from "../components/MessageBox";
+import MessageBox from "../components/chatComponents/MessageBox";
 import NavComponents from "../components/navcomponents/NavComponents";
 
 //redux
@@ -42,8 +42,7 @@ function Dashboard() {
   const userAuth = useAppSelector((store) => store.auth.isLogin);
   const dispatch = useAppDispatch();
 
-  // fns
-  console.log(isDark);
+  
   // theme
   const toggleTheme = () => {
     localStorage.setItem("isDark", JSON.stringify(!isDark));
@@ -124,14 +123,15 @@ function Dashboard() {
         updateChats={updateChats}
       />
 
-      <div className="flex   dark:bg-black">
-        {/* navigation */}
-        <div className="bg-gray-800 dark:bg-black">
+      {/* navigation */}
+      <div className="flex   ">
+        <div className="bg-gray-600 dark:bg-black">
           <Navbar
             toggleNavDrawer={toggleNavDrawer}
             toggleGroupDrawer={toggleGroupDrawer}
             toggleTheme={toggleTheme}
             isDark={isDark}
+            GroupdrawerOpen={GroupdrawerOpen}
           />
         </div>
 

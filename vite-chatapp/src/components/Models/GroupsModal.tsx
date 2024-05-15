@@ -123,7 +123,7 @@ function GroupDrawer({
     <div
       className={
         GroupdrawerOpen
-          ? "fixed side-drawer overflow-y-scroll custom-scrollbar left-1/4 top-14 bottom-14 z-40 shadow-lg w-1/2 bg-orange-300 dark:bg-black"
+          ? "fixed side-drawer overflow-y-scroll custom-scrollbar left-1/4 top-14 bottom-14 z-40 shadow-lg w-1/2 h-3/4 bg-white  dark:bg-black"
           : "hidden"
       }
       id="drawer-example"
@@ -134,7 +134,7 @@ function GroupDrawer({
         <div className="p-2 m-2 h-20 transparent-bg flex align-items-center">
           <h5
             id="drawer-label"
-            className="inline-flex text-3xl text-white dark:text-blue-600 items-center mb-4 font-semibold "
+            className="inline-flex text-3xl text-blue-600 items-center mb-4 font-semibold "
           >
             <HiOutlineUserGroup className="me-3" />
             Create Group Chat
@@ -142,11 +142,21 @@ function GroupDrawer({
           <button
             type="button"
             onClick={toggleGroupDrawer} // Close the drawer on button click
-            className="dark:bg-black bg-slate-800  hover:bg-white dark:hover:bg-white  text-sm w-8 h-8 absolute end-4 flex items-center justify-center "
+            className="dark:bg-black bg-slate-800 hover:bg-white dark:hover:bg-white  text-sm w-8 h-8 absolute end-4 flex items-center justify-center border-2 hover: border-blue-600"
           >
-            <RxCross2 className="text-lg text-gray-300 dark:text-white hover:text-black dark:hover:text-black " />
+            <RxCross2 className="text-lg text-gray-300 dark:text-white hover:text-black dark:hover:text-black" />
             <span className="sr-only">Close menu</span>
           </button>
+        </div>
+        <div className="flex">
+        <button
+          className=" bg-blue-600 text-white p-2.5 w-full hover:bg-slate-100 hover:text-blue-600"
+          onClick={() => setisMembersVisible(!isMembersVisible)}
+        >
+          Click to Add Group Members
+        </button>
+
+
         </div>
         <div className="flex flex-wrap gap-3 px-4 py-2 w-full side-drawer">
           {groupUsers?.map((currUser) => {
@@ -154,7 +164,7 @@ function GroupDrawer({
               <button
                 key={currUser._id}
                 onClick={() => handleRemoveGroupUser(currUser)}
-                className="bg-fuchsia-600 p-1 rounded text-white text-xs flex"
+                className="bg-fuchsia-600 p-2.5 rounded text-white text-xs flex"
               >
                 {currUser.name}
                 <RxCross2 className="ml-2" />
@@ -166,7 +176,7 @@ function GroupDrawer({
         <div className="p-4 relative side-drawer">
           <form
             id="groupForm"
-            className="max-w-lg mx-auto border-2 border-b-0 border-r-0 border-l-0 rounded bg-white"
+            className="max-w-lg mx-auto rounded bg-white"
             onSubmit={handleCreateGroupChat}
           >
             <div className="w-full">
@@ -188,16 +198,10 @@ function GroupDrawer({
                 />
               </div>
               <div>
-                <button
-                  className=" bg-blue-600 text-white  p-2.5 m-3 "
-                  onClick={() => setisMembersVisible(!isMembersVisible)}
-                >
-                  Click to Add Group Members
-                </button>
+
                 <div
-                  className={`${
-                    !isMembersVisible ? "hidden" : ""
-                  } h-3/5 pt-3 group-members `}
+                  className={`${!isMembersVisible ? "hidden" : ""
+                    } h-3/5 pt-3 group-members `}
                 >
                   <div className="mx-1 mb-3 ">
                     <input
@@ -211,11 +215,10 @@ function GroupDrawer({
                     />
                   </div>
                   <div
-                    className={`${
-                      contentHeightGroups > 100
+                    className={`${contentHeightGroups > 100
                         ? "overflow-y-scroll custom-scrollbar"
                         : "overflow-y-hidden"
-                    }`}
+                      }`}
                   >
                     {allUsers?.map((user) => {
                       return (

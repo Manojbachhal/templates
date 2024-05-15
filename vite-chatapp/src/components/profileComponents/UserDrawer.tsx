@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useAppSelector } from "../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import { RxCross2 } from "react-icons/rx";
 import { MdModeEditOutline } from "react-icons/md";
-import EditUserDetails from "./Models/EditUserDetails";
+import EditUserDetails from "../Models/EditUserDetails";
 
 interface Pros {
   userdrawerOpen: Boolean;

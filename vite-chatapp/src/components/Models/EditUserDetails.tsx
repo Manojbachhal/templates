@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 //icons
 import { RxCross2 } from "react-icons/rx";
@@ -14,9 +14,12 @@ function EditUserDetails({ editUserDetailsOpen, togglevisiblity }: props) {
   const nameref = useRef<HTMLInputElement>(null);
   const imageref = useRef<HTMLInputElement>(null);
 
+  const [inputVis,setinputVis]=useState(false);
+  const handleInputvis = ()=>{
+    setinputVis(!inputVis)
+  }
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("first");
 
     const name = nameref.current?.value;
     const imageFile = imageref.current?.files
@@ -44,20 +47,20 @@ function EditUserDetails({ editUserDetailsOpen, togglevisiblity }: props) {
     <div
       className={
         editUserDetailsOpen
-          ? "fixed side-drawer overflow-y-scroll custom-scrollbar left-1/4 top-14 bottom-14 z-40 shadow-lg w-1/2 bg-red-500 dark:bg-black"
+          ? "fixed side-drawer overflow-y-scroll custom-scrollbar left-1/4 top-14 bottom-14 z-40 shadow-lg w-1/2 h-1/2 bg-white dark:bg-black"
           : "hidden"
       }
       id="drawer-example"
       aria-labelledby="drawer-label"
     >
-      <div className="h-full">
+      <div className="">
         {/* heading  */}
         <div className="p-2 m-2 h-20 transparent-bg flex align-items-center">
           <h5
             id="drawer-label"
-            className="inline-flex text-3xl text-white dark:text-blue-600 items-center mb-4 font-semibold "
+            className="inline-flex text-3xl text-blue-600 items-center mb-4 font-semibold "
           >
-            {/* <HiOutlineUserGroup className="me-3" /> */}
+          
             <img src={userPic} alt="" width={"25px"} className="me-3" />
             Edit User Details
           </h5>
@@ -71,15 +74,24 @@ function EditUserDetails({ editUserDetailsOpen, togglevisiblity }: props) {
           </button>
         </div>
 
+        <div className="m-auto">
+
+        <button className={`bg-blue-400 text-white w-1/2 p-3 hover:text-blue-600 hover:bg-slate-100 ${inputVis==true?"active":""}`} onClick={handleInputvis}>User Name</button>
+            <button className={`bg-blue-400 text-white w-1/2 p-3 hover:text-blue-600 hover:bg-slate-100 ${!inputVis==true?"active":""}`} onClick={handleInputvis}>Profile Pic</button>
+        </div>
+
         {/* form content */}
-        <div className="p-4 relative side-drawer">
+        {/* <div className="p-4 relative side-drawer w-full"> */}
           <form
             id="groupForm"
-            className="max-w-lg mx-auto border-2 border-b-0 border-r-0 border-l-0 rounded bg-white"
+            className="max-w-lg mx-auto w-full rounded bg-white"
             onSubmit={handleSubmit}
           >
-            <div className="w-full">
-              <div className="mx-2">
+          
+
+
+            {/* <div className="w-full"> */}
+              <div className={`mx-2 ${!inputVis==true?"hidden":"block"}`}>
                 <label
                   htmlFor="groupname"
                   className="block p-2 text-xl text-blue-600 font-bold mb-2"
@@ -96,7 +108,7 @@ function EditUserDetails({ editUserDetailsOpen, togglevisiblity }: props) {
                   ref={nameref}
                 />
               </div>
-              <div className="mx-2 my-4">
+              <div className={`mx-2 my-4 ${inputVis==true?"hidden":"block"}`}>
                 <label
                   htmlFor="groupname"
                   className="block p-2 text-xl text-blue-600 font-bold mb-2"
@@ -117,11 +129,11 @@ function EditUserDetails({ editUserDetailsOpen, togglevisiblity }: props) {
                   Update Details
                 </button>
               </div>
-            </div>
+            {/* </div> */}
           </form>
         </div>
       </div>
-    </div>
+    // </div>
   );
 }
 

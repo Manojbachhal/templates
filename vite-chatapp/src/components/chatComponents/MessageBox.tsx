@@ -1,14 +1,14 @@
 import { PiNavigationArrow } from "react-icons/pi";
 import { IoChatbubblesOutline } from "react-icons/io5";
-import { ChatGroup, Message } from "../interfaces/interfaces";
+import { ChatGroup, Message } from "../../interfaces/interfaces";
 import { useEffect, useRef, useState } from "react";
-import { useAppSelector } from "../redux/hooks";
-import { getMessages, sendMessages } from "../redux/chats/chatAction";
+import { useAppSelector } from "../../redux/hooks";
+import { getMessages, sendMessages } from "../../redux/chats/chatAction";
 import ChatDetails from "./ChatDetails";
 import { io } from "socket.io-client";
 
-import mobileBanner from '../data/undraw_Modern_design_re_dlp8.png'
-import DeskTopBanner from '../data/undraw_online_message_re_3m5v.png'
+import mobileBanner from '../../data/undraw_Modern_design_re_dlp8.png'
+import DeskTopBanner from '../../data/undraw_online_message_re_3m5v.png'
 import EmojiPicker from 'emoji-picker-react';
 
 interface indivisualChat {
@@ -108,11 +108,11 @@ function MessageBox({ selectedChat }: indivisualChat) {
   return (
     <>
       {selectedChat ? (
-        <div className="flex shadow-2xl ps-2 h-full">
+        <div className="flex shadow-2xl ps-2 h-full dark:bg-black">
           <div className={` ${chatHeaderDrawer ? "w-2/3" : "w-full"}`}>
             {/* chat header */}
             <div
-              className="flex dark:bg-transparent chatheader border-b-4 border-green-500 hover:cursor-pointer p-2"
+              className="flex dark:bg-transparent chatheader border-b-4 border-blue-500 dark:text-white hover:cursor-pointer p-2"
               onClick={togglechatHeaderDrawer}
               style={{ height: "12%" }}
             >
@@ -160,7 +160,7 @@ function MessageBox({ selectedChat }: indivisualChat) {
 
             {/* chat body */}
             <div
-              className="chatbody bg-transparent custom-scrollbar overflow-y-scroll scroll-snap-y-container flex flex-col overflow-x-hidden"
+              className="chatbody bg-transparent custom-scrollbar overflow-y-scroll px-5 scroll-snap-y-container flex flex-col overflow-x-hidden dark:text-white"
               id="chatBox"
             >
               {Allmessages.map((currentMsg: Message) => {
@@ -190,13 +190,11 @@ function MessageBox({ selectedChat }: indivisualChat) {
                         </div>
                         <div className="chat-header">
                           {currentMsg.sender.name}
-
                         </div>
                         <div className="chat-bubble bg-blue-500">{currentMsg.content}</div>
 
                       </div>
                     }
-
                   </>
                 );
               })}
@@ -204,7 +202,7 @@ function MessageBox({ selectedChat }: indivisualChat) {
 
             {/* chat footer */}
             <div
-              className="transparent-bg w-3/4 m-auto px-2 flex items-stretch rounded-full"
+              className="transparent-bg w-11/12 mt-2 m-auto px-2 flex items-stretch rounded"
               style={{ boxShadow: " gray 0px 8px 24px" }}
             >
 
@@ -220,7 +218,7 @@ function MessageBox({ selectedChat }: indivisualChat) {
                   className="flex-1 mx-auto px-2 focus:outline-none bg-transparent placeholder-blue-500  dark:placeholder-gray-500 "
                 />
                 {/* <EmojiPicker open={emoji} reactionsDefaultOpen={true} style={{position:'absolute',bottom:'10%',right:'9%'}} /> */}
-                <div className="border-l-2 w-16 flex items-center justify-center">
+                <div className="border-l-2 w-32 flex items-center justify-around">
 
                   <button className={`rounded-full p-1 ${emoji ? "bg-blue-200" : "bg-blue-500"} `} onClick={handleEmoji} > 😊 </button>
                   <button type="submit" className="rounded-full bg-blue-500">
@@ -243,15 +241,15 @@ function MessageBox({ selectedChat }: indivisualChat) {
           </div>
         </div>
       ) : (
-        <div className="shadow-2xl bg-white dark:bg-black h-full p-2  flex items-center justify-center">
+        <div className="shadow-2xl bg-white dark:bg-black h-full p-2" >
           <div className="my-auto  ">
-            <h1 className="text-5xl text-blue-700 text-center">
+            <h1 className="md:text-5xl sm:text-2xl text-blue-700 font-serif text-center">
               Click a chat to start a conversation
             </h1>
             {/* <IoChatbubblesOutline className="text-8xl m-auto mt-4 text-blue-700" /> */}
           </div>
-          <img src={DeskTopBanner} alt="" width={'60%'} className="lg:block md:hidden" />
-          <img src={mobileBanner} alt="" className="lg:hidden md:block"/>
+          <img src={DeskTopBanner} alt="" width={'60%'} className="lg:block md:hidden sm:hidden m-auto my-5" />
+          <img src={mobileBanner} alt="" className="lg:hidden md:block sm:block m-auto my-5"/>
         </div>
 
       )}

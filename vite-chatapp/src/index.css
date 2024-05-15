@@ -64,9 +64,10 @@ ul li {
 
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px; /* Adjust the width as needed */
+  /* height: 3px; */
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: green;
+  background-color: rgb(31, 79, 238);
   border-radius: 5px;
   width: 4px; /* Adjust the width as needed */
   height: 2px; /* Adjust the height as needed */
@@ -78,39 +79,12 @@ ul li {
   height: 4px;
 }
 
+
 .chat-bubble {
   margin: 0px 30px;
   position: relative;
   animation: fadeIn 0.5s ease-in;
 }
-/* .slide-right,
-.slide-left {
-  overflow: hidden !important;
-  width: 100%;
-}
-
-.slide-left {
-  animation: 3s slide-left;
-}
-@keyframes slide-left {
-  from {
-    margin-left: 100%;
-  }
-  to {
-    margin-left: 0%;
-  }
-}
-.slide-right {
-  animation: 3s slide-right;
-}
-@keyframes slide-right {
-  from {
-    margin-left: -100%;
-  }
-  to {
-    margin-left: 0%;
-  }
-} */
 
 .chat-bubble--left:before {
   border-bottom: 5px solid transparent;
@@ -165,12 +139,7 @@ ul li {
 .text-primary {
   color: #7269ef;
 }
-/* .recent-chats {
-  height: 90vh;
-} */
-/* .side-drawer {
-  background: rgb(31 64 55 / 88%);
-} */
+
 .contact-bg {
   background: rgb(34 17 139 / 12%);
 }
@@ -205,4 +174,9 @@ ul li {
 .loader {
   animation: rotate 1s linear infinite;
   transform-origin: center; /* Specify the center of rotation */
+}
+
+.active{
+
+  background: rgb(60, 60, 255);
 }

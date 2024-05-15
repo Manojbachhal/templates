@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getChats } from "../redux/chats/chatAction";
 import Loader from "./svg/Loading";
 import { GrUserAdd } from "react-icons/gr";
-
+import gsap from "gsap"
 interface props {
   toggleNavDrawer: (val: string) => void;
   updateChats: (val: ChatGroup) => void;
@@ -80,6 +80,19 @@ function UserSearch({ toggleNavDrawer }: props) {
   useEffect(() => {
     getAllUsers();
   }, []);
+
+  useEffect(()=>{
+    let animation = gsap.to('#addcontact',{
+      x:-20,
+      scale:1.2,
+      duration:1,
+    })
+
+    return ()=>{
+      animation.kill();
+    }
+
+  })
 
   return (
     <div className="p-2 h-90-percent">
@@ -158,7 +171,7 @@ function UserSearch({ toggleNavDrawer }: props) {
                     <span className="text-blue-400">{user.email}</span>
                   </p>
                 </div>
-                <div className="text-center bg-green-400 ms-3 rounded-full px-2 p-1 m-auto shadow-2xl ">
+                <div className="text-center bg-green-400 ms-3 rounded-full px-2 p-1 m-auto shadow-2xl" id={'addcontact'}>
                   <button
                     onClick={() => addContact(user._id)}
                     className="tooltip"

@@ -6,16 +6,22 @@ import userSearchLogo from "../../data/researcher.png";
 import createGroupLogo from "../../data/group.png";
 import themeIcon from "../../data/day-and-night.png";
 import logoutIcon from "../../data/exit.png";
+import { BsChatText } from "react-icons/bs";
+import { LuContact } from "react-icons/lu";
+import { TbUsersPlus } from "react-icons/tb";
+
 
 // images
 import logo from "../../data/logo-no-background.png";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
+import logoA from '../svg/logo.svg'
 
 interface props {
   toggleNavDrawer: (val: string) => void;
   toggleGroupDrawer: () => void;
   toggleTheme: () => void;
+  GroupdrawerOpen:boolean;
   isDark: boolean;
 }
 
@@ -24,6 +30,7 @@ const Navbar = ({
   toggleNavDrawer,
   toggleGroupDrawer,
   toggleTheme,
+  GroupdrawerOpen,
   isDark,
 }: props) => {
 
@@ -37,8 +44,9 @@ const Navbar = ({
 useEffect(()=>{
 
   const animation = gsap.to(logoRef.current,{
-    duration: 1,
+    duration: 2,
     rotate:360,
+    delay:0.5,
     ease: "power2.inOut",
   })
 
@@ -54,27 +62,58 @@ useEffect(()=>{
   }
 
 },[])
+const [activeNavItem, setActiveNavItem] = useState('chat');
+
+  const handleNavItemClick = (item: string) => {
+    setActiveNavItem(item);
+    toggleNavDrawer(item);
+  };
+  const[isActive,setIsActive]=useState<any>({
+    chatNav:true,
+    contactNav:false,
+    groupNav:false,
+    userNav:false,
+    infoNav:false,
+  })
+
+  const handleActive = (val:string)=>{
+    setIsActive({
+      chatNav:val==="chatNav",
+      contactNav:val==="contactNav",
+      groupNav:val==="groupNav",
+      userNav:val==="userNav",
+      infoNav:val==="infoNav",
+    })
+
+
+    if(GroupdrawerOpen){
+      toggleGroupDrawer();
+    }
+  }
+
   return (
     <>
       <div className="h-screen overflow-y-hidden overflow-x-hidden sm:hidden xsm md:flex flex-col justify-between  transparent-bg ">
         <ul className="menu menu-vertical">
-          <li ref={logoRef}>
-            <div className="avatar placeholder">
+          <li ref={logoRef} >
+            <div className="avatar placeholder bg-white" style={{margin:'-30px',padding:'20px'}}>
               <div className="logo m-auto text-center">
                 <img
-                  src={logo}
+                  src={logoA}
                   alt=""
-                  style={{ width: "50px" }}
-                  className="m-auto pt-1 rounded-full"
+                  style={{ width: "80px" }}
+                  className="m-auto pt-1 "
                 />
               </div>
             </div>
           </li>
-          <li ref={FcSmsRef}>
+          <li ref={FcSmsRef} style={{marginTop:'30px'}} className={`${isActive.chatNav?"active":""}`} onClick={()=>handleActive('chatNav')}>
             <button
-              className="py-3 tooltip m-auto hover:bg-transparent focus:outline-none"
+              className={`py-3 tooltip m-auto hover:bg-transparent focus:outline-none ${
+                activeNavItem === 'chat' ? 'active' : ''
+              }`}
               style={{
-                background: "transparent",
+                background:'transparent',
                 border: "none",
                 boxShadow: "none",
                 color: "inherit",
@@ -82,29 +121,34 @@ useEffect(()=>{
               data-tip="Chats"
               onClick={() => toggleNavDrawer("chat")}
             >
-              <FcSms className="lg:text-4xl md:text-2xl" />
+                <BsChatText className="lg:text-4xl md:text-2xl text-white"/> 
+              {/* <FcSms className="lg:text-4xl md:text-2xl" /> */}
             </button>
           </li>
-          <li  ref={FcContactsRef}>
+          <li  ref={FcContactsRef}  className={`${isActive.contactNav?"active":""}`} onClick={()=>handleActive('contactNav')}>
             <button
-              className="py-3 tooltip m-auto hover:bg-transparent focus:outline-none"
+              className="py-3 tooltip m-auto hover:bg-transparent  focus:outline-none"
               style={{
-                background: "transparent",
+               
                 border: "none",
                 boxShadow: "none",
                 color: "inherit",
               }}
               data-tip="Contacts"
-              onClick={() => toggleNavDrawer("contact")}
+              onClick={() => toggleNavDrawer("contact") }
             >
-              <FcContacts className="lg:text-4xl md:text-2xl" />
+           
+            <LuContact className="lg:text-4xl md:text-2xl text-white"/>
+              {/* <FcContacts className="lg:text-4xl md:text-2xl" /> */}
             </button>
           </li>
-          <li ref={GroupRef}>
+          <li ref={GroupRef} className={`${isActive.groupNav?"active":""}`} onClick={()=>handleActive('groupNav')}>
             <button
-              className="py-3 tooltip m-auto hover:bg-transparent focus:outline-none"
+              className={`rounded tooltip m-auto  hover:bg-transparent focus:outline-none ${
+                activeNavItem === 'search' ? 'active' : ''
+              }`}
               style={{
-                background: "transparent",
+                
                 border: "none",
                 boxShadow: "none",
                 color: "inherit",
@@ -112,10 +156,10 @@ useEffect(()=>{
               data-tip="All Users"
               onClick={() => toggleNavDrawer("search")}
             >
-              <img src={userSearchLogo} alt="" style={{ width: "25px" }}  />
+              <TbUsersPlus className="lg:text-4xl md:text-2xl text-white"  />
             </button>
           </li>
-          <li ref={usersRef}>
+          <li ref={usersRef} className={`${isActive.userNav?"active":""}`} onClick={()=>handleActive('userNav')}>
             <button
               className="py-3 tooltip m-auto hover:bg-transparent focus:outline-none"
               style={{
@@ -127,12 +171,10 @@ useEffect(()=>{
               data-tip="Create Group"
               onClick={() => toggleGroupDrawer()}
             >
-              {/* <img src={createGroupLogo} alt="" style={{ width: "25px" }} /> */}
-
-              <AiOutlineUsergroupAdd className="fs-icons text-green-400 " />
+              <AiOutlineUsergroupAdd className="lg:text-4xl md:text-2xl text-white" />
             </button>
           </li>
-          <li ref={userInfoRef}>
+          <li ref={userInfoRef} className={`${isActive.infoNav?"active":""}`} onClick={()=>handleActive('infoNav')}>
             <button
               className="py-3 tooltip m-auto hover:bg-transparent focus:outline-none"
               style={{
@@ -148,6 +190,7 @@ useEffect(()=>{
             </button>
           </li>
         </ul>
+
         <ul className="menu menu-vertical ">
           <li>
             <button

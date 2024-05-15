@@ -1,6 +1,6 @@
 import { ChatGroup } from "../../interfaces/interfaces";
 import AllChats from "../chatComponents/AllChats";
-import UserDrawer from "../UserDrawer";
+import UserDrawer from "../profileComponents/UserDrawer";
 import UserSearch from "../SearchUsers";
 import Contacts from "../Contacts";
 

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../../redux/hooks";
 import { ChatGroup } from "../../interfaces/interfaces";
-import SkeletonLoading from "../SkeletonLoading";
-
+import SkeletonLoading from "../svg/SkeletonLoading";
+const ENDPOINT = "http://localhost:3001";
+import { io } from "socket.io-client";
+let socket: any = undefined;
+let selectedChatCompare: any = undefined;
 interface props {
   upchatIndividualChat: (val: ChatGroup | undefined) => void;
   chatData: ChatGroup[] | undefined;
@@ -10,6 +13,7 @@ interface props {
 function AllChats({ upchatIndividualChat, chatData }: props) {
   const [contentHeight, setContentHeight] = useState(480);
 
+  const [Data,setData]=useState(chatData)
   // Calculate the height of the content
   useEffect(() => {
     const contentElement = document.querySelector(".recent-chats");
@@ -18,6 +22,26 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
       setContentHeight(height);
     }
   }, []);
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", currentUser);
+  }, []);
+
+
+  useEffect(() => {
+    socket.on("message recieved", (newMessage: any) => {
+      if ( selectedChatCompare && selectedChatCompare._id === newMessage.chat._id) {
+        return;
+      } else {
+        chatData?.map((ele)=>{
+          if(ele._id==newMessage._id){
+            ele.latestMessage.content=newMessage.content;
+          }
+        })
+      }
+      selectedChatCompare=newMessage
+    });
+  });
 
   // logged in user
   const currentUser = useAppSelector((store: any) => store.auth.user);
@@ -53,7 +77,7 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
 
                   <div className="ps-2">
                     <p className="px-2 text-white uppercase">{chat.chatName}</p>
-                    <p className="px-2 text-sm text-gray-600 dark:text-blue-600 ">
+                    <p className="px-2 text-sm text-blue-600 ">
                       {chat.latestMessage?.content}
                     </p>
                   </div>
@@ -81,11 +105,11 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
                             width={"40px"}
                             className="rounded-full"
                           />
-                          <div className="ps-2">
+                          <div className="ps-2 font-sans">
                             <p className="px-2 text-white uppercase">
                               {user.name}
                             </p>
-                            <p className="px-2 text-sm text-gray-600 dark:text-blue-600 ">
+                            <p className="px-2 text-sm text-yellow-400 dark:text-blue-600 ">
                               {chat.latestMessage?.content}
                             </p>
                           </div>
