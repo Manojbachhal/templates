@@ -75,7 +75,7 @@ io.on("connection", (socket) => {
 
     users.forEach((user) => {
       if (user._id !== newMessage.sender._id)
-        socket.in(user._id).emit("message recieved", newMessage);
+        socket.in(user._id).emit("message received", newMessage);
     });
   });
 });
