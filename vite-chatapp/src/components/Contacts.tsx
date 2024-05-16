@@ -96,10 +96,10 @@ function Contacts({ updateChats, toggleNavDrawer }: props) {
             user._id !== currentUser._id && (
               <div
                 key={index}
-                className="p-3 my-2 mx-3 mt-6 h-20 contact-bg glass"
+                className="p-3 my-2 mx-3 mt-6 h-20 contact-bg glass contact-div"
                 onClick={() => startChat(user._id)}
               >
-                <div className="flex hover:cursor-pointer ">
+                <div className="flex hover:cursor-pointer contact-details">
                   <div className="w-20">
                     <img src={user.pic} alt="" />
                   </div>

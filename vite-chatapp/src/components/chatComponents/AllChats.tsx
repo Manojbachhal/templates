@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../../redux/hooks";
 import { ChatGroup } from "../../interfaces/interfaces";
 import SkeletonLoading from "../svg/SkeletonLoading";
-import gsap from 'gsap'
-;const ENDPOINT = "http://localhost:3001";
+import gsap from 'gsap';
+const ENDPOINT = "http://localhost:3001";
 import { io } from "socket.io-client";
 let socket: any = undefined;
 let selectedChatCompare: any = undefined;
@@ -12,9 +12,11 @@ interface props {
   chatData: ChatGroup[] | undefined;
 }
 function AllChats({ upchatIndividualChat, chatData }: props) {
+
   const [contentHeight, setContentHeight] = useState(480);
   const [Data,setData]=useState(chatData)
-  const [notification,setNotification]=useState([]);
+  const [notification,setNotification]=useState<ChatGroup[]>([]);
+
   useEffect(() => {
     const contentElement = document.querySelector(".recent-chats");
     if (contentElement) {
@@ -31,8 +33,8 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
   useEffect(() => {
     socket.on("message recieved", (newMessage: any) => {
       if ( !selectedChatCompare || selectedChatCompare._id !== newMessage.chat._id) {
-        // console.log(newMessage)
-        return ;
+        setNotification([newMessage,...notification]);
+        
       } else {
         chatData?.map((ele)=>{
           if(ele._id==newMessage._id){
