@@ -40,7 +40,7 @@ function MessageBox({ selectedChat }: indivisualChat) {
   }, []);
 
   useEffect(() => {
-    socket.on("message recieved", (newMessage: any) => {
+    socket.on("message received", (newMessage: any) => {
       if (
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessage.chat._id

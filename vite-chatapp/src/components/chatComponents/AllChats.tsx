@@ -31,7 +31,7 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
 
 
   useEffect(() => {
-    socket.on("message recieved", (newMessage: any) => {
+    socket.on("message received", (newMessage: any) => {
       if ( !selectedChatCompare || selectedChatCompare._id !== newMessage.chat._id) {
         setNotification([newMessage,...notification]);
         

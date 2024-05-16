@@ -97,7 +97,7 @@ const Navbar = ({ toggleNavDrawer, toggleGroupDrawer, toggleTheme, GroupdrawerOp
 
 
   useEffect(() => {
-    socket.on("message recieved", (newMessage: any) => {
+    socket.on("message received", (newMessage: any) => {
       if (!selectedChatCompare || selectedChatCompare._id !== newMessage.chat._id) {
         if (notification.length > 0) {
           let newChats = notification.map((currentChat) => {
