@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../../redux/hooks";
 import { ChatGroup } from "../../interfaces/interfaces";
 import SkeletonLoading from "../svg/SkeletonLoading";
-const ENDPOINT = "http://localhost:3001";
+import gsap from 'gsap'
+;const ENDPOINT = "http://localhost:3001";
 import { io } from "socket.io-client";
 let socket: any = undefined;
 let selectedChatCompare: any = undefined;
@@ -12,9 +13,8 @@ interface props {
 }
 function AllChats({ upchatIndividualChat, chatData }: props) {
   const [contentHeight, setContentHeight] = useState(480);
-
   const [Data,setData]=useState(chatData)
-  // Calculate the height of the content
+  const [notification,setNotification]=useState([]);
   useEffect(() => {
     const contentElement = document.querySelector(".recent-chats");
     if (contentElement) {
@@ -30,8 +30,9 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
 
   useEffect(() => {
     socket.on("message recieved", (newMessage: any) => {
-      if ( selectedChatCompare && selectedChatCompare._id === newMessage.chat._id) {
-        return;
+      if ( !selectedChatCompare || selectedChatCompare._id !== newMessage.chat._id) {
+        // console.log(newMessage)
+        return ;
       } else {
         chatData?.map((ele)=>{
           if(ele._id==newMessage._id){
@@ -42,6 +43,8 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
       selectedChatCompare=newMessage
     });
   });
+
+  console.log(notification,"notification")
 
   // logged in user
   const currentUser = useAppSelector((store: any) => store.auth.user);
@@ -69,13 +72,15 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
             return chat.isGroupChat ? (
               <div
                 key={chat._id}
-                className="p-3 my-2 mx-3 contact-bg"
+                className="p-3 my-2 mx-3 contact-bg "
                 onClick={() => upchatIndividualChat(chat)}
               >
-                <div className="hover:cursor-pointer flex align-center">
-                  <img src={chat.groupPic} alt="" width={"30%"} className="" />
+                <div className="hover:cursor-pointer flex align-center ">
+                  <div className="userImage">
+                      <img src={chat.groupPic} alt="" width={"30%"} className="" />
+                  </div>
 
-                  <div className="ps-2">
+                  <div className="ps-2 ">
                     <p className="px-2 text-white uppercase">{chat.chatName}</p>
                     <p className="px-2 text-sm text-blue-600 ">
                       {chat.latestMessage?.content}
@@ -90,27 +95,27 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
                     user._id !== currentUser._id && (
                       <div
                         key={index}
-                        className="p-3 my-2 mx-3 contact-bg"
+                        className="my-2 mx-3  glass "
                         onClick={async () => {
                           upchatIndividualChat(chat);
                         }}
                       >
-                        <div
-                          key={user._id}
-                          className="flex hover:cursor-pointer"
-                        >
+                        <div key={user._id}  className="flex hover:cursor-pointer " >
+                          <div className="userImage w-24">
+
                           <img
                             src={user.pic}
                             alt=""
-                            width={"40px"}
-                            className="rounded-full"
+                            className=""
+                         
                           />
-                          <div className="ps-2 font-sans">
-                            <p className="px-2 text-white uppercase">
+                          </div>
+                          <div className="ps-2 font-sans flex align-items-center justify-center flex-col  ">
+                            <p className="px-2 text-blue-600 dark:text-white tracking-wider uppercase text-2xl" >
                               {user.name}
                             </p>
-                            <p className="px-2 text-sm text-yellow-400 dark:text-blue-600 ">
-                              {chat.latestMessage?.content}
+                            <p className="px-2 text-sm text-yellow-400 dark:text-cyan-300">
+                              {chat.latestMessage?.content} 
                             </p>
                           </div>
                         </div>

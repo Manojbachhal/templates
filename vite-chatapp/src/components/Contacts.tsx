@@ -1,9 +1,9 @@
 import axios from "axios";
 import { getCookie } from "cookies-next";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChatGroup, User } from "../interfaces/interfaces";
 import { useAppSelector } from "../redux/hooks";
-
+import gsap from 'gsap'
 interface contacts {
   contacts: User[];
 }
@@ -33,6 +33,25 @@ function Contacts({ updateChats, toggleNavDrawer }: props) {
   (() => {
     if (contacts.length === 0) getContacts();
   })();
+
+  useEffect(()=>{
+    let animation = gsap.from('.contact-div',{
+      x:300,
+      opacity:0.10,
+      duration:1.5,
+    })
+    let animation1 = gsap.from ('.contact-details',{
+      y:50,
+      delay:1.5,
+      opacity:0.10,
+      duration:1.5,
+    })
+
+    // return ()=>{
+    //   animation.kill();
+    //   animation1.kill();
+    // }
+  },[])
 
   // start a chat
 
@@ -80,7 +99,7 @@ function Contacts({ updateChats, toggleNavDrawer }: props) {
                 className="p-3 my-2 mx-3 mt-6 h-20 contact-bg glass"
                 onClick={() => startChat(user._id)}
               >
-                <div className="flex hover:cursor-pointer">
+                <div className="flex hover:cursor-pointer ">
                   <div className="w-20">
                     <img src={user.pic} alt="" />
                   </div>
