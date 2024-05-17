@@ -129,11 +129,11 @@ function GroupDrawer({
       id="drawer-example"
       aria-labelledby="drawer-label"
     >
-      <div className="h-full bg-blue-600 dark:bg-black">
+      <div className="h-full  dark:bg-black">
         <div className="p-2 h-24 transparent-bg flex align-items-center">
           <h5
             id="drawer-label"
-            className="inline-flex text-3xl text-white items-center mb-4 font-semibold "
+            className="inline-flex text-3xl text-blue-600 items-center mb-4 font-semibold "
           >
             <HiOutlineUserGroup className="me-3 text-6xl bg-blue-600 text-white p-2 rounded-full" />
             Create Group Chat

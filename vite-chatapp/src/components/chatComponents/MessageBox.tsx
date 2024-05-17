@@ -108,7 +108,7 @@ function MessageBox({ selectedChat }: indivisualChat) {
   return (
     <>
       {selectedChat ? (
-        <div className="flex shadow-2xl ps-2 h-full dark:bg-black">
+        <div className=" flex shadow-2xl ps-2 h-full dark:bg-black">
           <div className={` ${chatHeaderDrawer ? "w-2/3" : "w-full"}`}>
             {/* chat header */}
             <div
@@ -230,9 +230,9 @@ function MessageBox({ selectedChat }: indivisualChat) {
           </div>
 
           <div
-            className={` ms-2  ${chatHeaderDrawer ? "w-1/3" : "hidden"
+            className={` ms-2 bg-gradient-to-r from-gray-300 h-full  ${chatHeaderDrawer ? "w-1/3" : "hidden"
               } text-white`}
-            style={{ height: "95vh" }}
+           
           >
             <ChatDetails
               togglechatHeaderDrawer={togglechatHeaderDrawer}
@@ -241,9 +241,9 @@ function MessageBox({ selectedChat }: indivisualChat) {
           </div>
         </div>
       ) : (
-        <div className="shadow-2xl bg-white dark:bg-black h-full p-2" >
+        <div className="shadow-2xl bg-white dark:bg-black h-full p-2 sm:hidden" >
 
-          <div className="diff aspect-[16/9] h-full">
+          <div className="diff aspect-[12/9] h-full">
             <div className="diff-item-1">
               <div className="bg-primary text-primary-content text-9xl font-black grid place-content-center">  Click a chat to start a conversation</div>
             </div>

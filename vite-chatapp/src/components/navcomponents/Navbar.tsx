@@ -122,10 +122,10 @@ const Navbar = ({ toggleNavDrawer, toggleGroupDrawer, toggleTheme, GroupdrawerOp
   console.log(notification, "navbar")
   return (
     <>
-      <div className="w-full  h-screen overflow-y-hidden overflow-x-hidden sm:hidden xsm md:flex flex-col justify-between  transparent-bg ">
+      <div className="w-full h-screen overflow-y-hidden overflow-x-hidden md:flex flex-col justify-between transparent-bg ">
         <ul className="menu menu-vertical">
           <li ref={logoRef} >
-            <div className="avatar placeholder bg-blue-500" style={{ margin: '-30px', padding: '20px' }}>
+            <div className="avatar placeholder bg-slate-700" style={{ margin: '-30px', padding: '20px' }}>
               <div className="logo m-auto text-center">
                 <img
                   src={logoA}

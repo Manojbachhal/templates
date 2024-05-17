@@ -11,13 +11,13 @@ interface Pros {
 
 function ChatDetails({ togglechatHeaderDrawer, selectedChat }: Pros) {
   return (
-    <div className={"transparent-bg h-full"}>
-      <div className="info-header h-1/3">
+    <div className={"transparent-bg  h-full"}>
+      <div className="info-header h-1/3 ">
         {/* header */}
-        <div className="ps-2 h-20 flex align-items-center ">
+        <div className="ps-2 h-20 flex align-items-center border-b-4 border-blue-600">
           <h5
             id="drawer-label"
-            className="inline-flex text-2xl text-white items-center mb-4 pl-3"
+            className="text-5xl text-black m-auto mb-6 pl-3 "
           >
             {selectedChat?.isGroupChat ? "Group info" : "Contact info"}
           </h5>

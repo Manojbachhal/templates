@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { ChatGroup } from "../interfaces/interfaces";
 
 //components
-import GroupsDrawer from "../components/Models/GroupsModal";
+import GroupsDrawer from "../components/Models/createGroupsModal";
 import MessageBox from "../components/chatComponents/MessageBox";
 import NavComponents from "../components/navcomponents/NavComponents";
 
@@ -123,7 +123,7 @@ function Dashboard() {
       />
 
       {/* navigation */}
-      <div className="flex w-full">
+      <div className="flex w-full md:flex-row sm:flex-col-reverse">
         <div className="bg-gray-600 dark:bg-black w-24 ">
           <Navbar
             toggleNavDrawer={toggleNavDrawer}
