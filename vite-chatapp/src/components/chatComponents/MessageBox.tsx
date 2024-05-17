@@ -143,7 +143,7 @@ function MessageBox({ selectedChat }: indivisualChat) {
                         <p className="ps-2 my-auto lg:text-3xl md:text-2xl">
                           {user.name}
                         </p>
-                  
+
                         {/* <div className="avatar offline hidden">
                           <div className="w-24 rounded-full">
                             <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
@@ -242,14 +242,17 @@ function MessageBox({ selectedChat }: indivisualChat) {
         </div>
       ) : (
         <div className="shadow-2xl bg-white dark:bg-black h-full p-2" >
-          <div className="my-auto  ">
-            <h1 className="md:text-5xl sm:text-2xl text-blue-700 font-serif text-center">
-              Click a chat to start a conversation
-            </h1>
-            {/* <IoChatbubblesOutline className="text-8xl m-auto mt-4 text-blue-700" /> */}
+
+          <div className="diff aspect-[16/9] h-full">
+            <div className="diff-item-1">
+              <div className="bg-primary text-primary-content text-9xl font-black grid place-content-center">  Click a chat to start a conversation</div>
+            </div>
+            <div className="diff-item-2">
+              <div className="bg-base-200 text-9xl font-black grid place-content-center">  Click a chat to start a conversation</div>
+            </div>
+            <div className="diff-resizer"></div>
           </div>
-          <img src={DeskTopBanner} alt="" width={'60%'} className="lg:block md:hidden sm:hidden m-auto my-5" />
-          <img src={mobileBanner} alt="" className="lg:hidden md:block sm:block m-auto my-5"/>
+
         </div>
 
       )}

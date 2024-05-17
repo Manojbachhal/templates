@@ -5,7 +5,6 @@ import logoutIcon from "../../data/exit.png";
 import { BsChatText } from "react-icons/bs";
 import { LuContact } from "react-icons/lu";
 import { TbUsersPlus } from "react-icons/tb";
-import { PiBellSimpleRingingLight } from "react-icons/pi";
 
 
 // images
@@ -43,6 +42,7 @@ const Navbar = ({ toggleNavDrawer, toggleGroupDrawer, toggleTheme, GroupdrawerOp
     const animation = gsap.to(logoRef.current, {
       duration: 2,
       rotate: 360,
+      scale:1.1,
       delay: 0.5,
       ease: "power2.inOut",
     })
@@ -122,10 +122,10 @@ const Navbar = ({ toggleNavDrawer, toggleGroupDrawer, toggleTheme, GroupdrawerOp
   console.log(notification, "navbar")
   return (
     <>
-      <div className="h-screen overflow-y-hidden overflow-x-hidden sm:hidden xsm md:flex flex-col justify-between  transparent-bg ">
+      <div className="w-full  h-screen overflow-y-hidden overflow-x-hidden sm:hidden xsm md:flex flex-col justify-between  transparent-bg ">
         <ul className="menu menu-vertical">
           <li ref={logoRef} >
-            <div className="avatar placeholder bg-white" style={{ margin: '-30px', padding: '20px' }}>
+            <div className="avatar placeholder bg-blue-500" style={{ margin: '-30px', padding: '20px' }}>
               <div className="logo m-auto text-center">
                 <img
                   src={logoA}
@@ -134,9 +134,10 @@ const Navbar = ({ toggleNavDrawer, toggleGroupDrawer, toggleTheme, GroupdrawerOp
                   className="m-auto pt-1 "
                 />
               </div>
+              
             </div>
           </li>
-          <li ref={FcSmsRef} style={{ marginTop: '30px' }} className={`${isActive.chatNav ? "active" : ""}`} onClick={() => handleActive('chatNav')}>
+          <li ref={FcSmsRef} style={{ marginTop: '50px' }} className={`${isActive.chatNav ? "active" : ""}`} onClick={() => handleActive('chatNav')}>
             <button
               className={`py-3 tooltip m-auto hover:bg-transparent focus:outline-none ${activeNavItem === 'chat' ? 'active' : ''
                 }`}
@@ -150,7 +151,8 @@ const Navbar = ({ toggleNavDrawer, toggleGroupDrawer, toggleTheme, GroupdrawerOp
               onClick={() => toggleNavDrawer("chat")}
             >
               <BsChatText className="lg:text-4xl md:text-2xl text-white" />
-
+              <div className={`absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900
+                 ${notification.length == 0 ? "hidden" : ''}`}>{notification.length}</div>
             </button>
           </li>
           <li ref={FcContactsRef} className={`${isActive.contactNav ? "active" : ""}`} onClick={() => handleActive('contactNav')}>
@@ -216,17 +218,7 @@ const Navbar = ({ toggleNavDrawer, toggleGroupDrawer, toggleTheme, GroupdrawerOp
               <FcPortraitMode className="lg:text-4xl md:text-2xl" />
             </button>
           </li>
-          {/* des */}
-          <li ref={userInfoRef} >
-            
-
-            <button type="button" className="relative inline-flex items-center  text-sm font-medium text-center text-white focus:ring-4 focus:outline-none focus:ring-blue-300 " onClick={() => document.getElementById('my_modal_3').showModal()}>
-              <PiBellSimpleRingingLight className="lg:text-4xl md:text-2xl text-white " />
-              <span className="sr-only">Notifications</span>
-              <div className={`absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900
-                 ${notification.length == 0 ? "hidden" : ''}`}>{notification.length}</div>
-            </button>
-          </li>
+          
         </ul>
 
         <ul className="menu menu-vertical ">

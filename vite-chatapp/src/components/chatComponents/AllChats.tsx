@@ -46,6 +46,12 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
     });
   });
 
+  useEffect(() => {
+    gsap.fromTo('.latestMessage', 
+      { scale: 1.1 }, 
+      { scale: 1.0, duration: 1 }
+    );
+  });
   console.log(notification,"notification")
 
   // logged in user
@@ -60,6 +66,7 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
         <h5 className="inline-flex px-3 text-3xl text-white items-center mb-4 font-semibold ">
           Chats
         </h5>
+        
       </div>
 
       <p className="text-2xl font-thin text-white px-2">Recent</p>
@@ -84,7 +91,7 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
 
                   <div className="ps-2 ">
                     <p className="px-2 text-white uppercase">{chat.chatName}</p>
-                    <p className="px-2 text-sm text-blue-600 ">
+                    <p className="px-2 absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
                       {chat.latestMessage?.content}
                     </p>
                   </div>
@@ -113,13 +120,20 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
                           />
                           </div>
                           <div className="ps-2 font-sans flex align-items-center justify-center flex-col  ">
-                            <p className="px-2 text-blue-600 dark:text-white tracking-wider uppercase text-2xl" >
+                            <p className="px-2 text-2xl font-black  dark:text-white  uppercase" >
+                            {/* tracking-wider */}
                               {user.name}
                             </p>
-                            <p className="px-2 text-sm text-yellow-400 dark:text-cyan-300">
-                              {chat.latestMessage?.content} 
-                            </p>
+                            <div>
+                              <div className="flex px-2"> 
+                             <p className="text-blue-500 font-bold underline">Latest Message : </p> 
+                                 <p className="px-2 text-blue-500 "> {chat.latestMessage?.content}</p>
+                                  
+                              </div>
+
+                            </div>
                           </div>
+                          
                         </div>
                       </div>
                     )

@@ -51,7 +51,7 @@ function Contacts({ updateChats, toggleNavDrawer }: props) {
     //   animation.kill();
     //   animation1.kill();
     // }
-  },[])
+  })
 
   // start a chat
 

@@ -109,7 +109,6 @@ function Dashboard() {
   }, []);
 
   useEffect(() => {
-    console.log(userAuth);
     if (!userAuth && window.location.pathname !== "/login") {
       Router("/login");
     }
@@ -124,8 +123,8 @@ function Dashboard() {
       />
 
       {/* navigation */}
-      <div className="flex   ">
-        <div className="bg-gray-600 dark:bg-black">
+      <div className="flex w-full">
+        <div className="bg-gray-600 dark:bg-black w-24 ">
           <Navbar
             toggleNavDrawer={toggleNavDrawer}
             toggleGroupDrawer={toggleGroupDrawer}
@@ -135,7 +134,7 @@ function Dashboard() {
           />
         </div>
 
-        <div className="h-screen md:w-1/3 border-3 shadow-right bg-gradient-to-r from-gray-900 dark:bg-black">
+        <div className="h-screen md:w-1/4 border-3 shadow-right bg-gradient-to-r from-gray-900 dark:bg-black">
           <NavComponents
             navDrawer={navDrawer}
             upchatIndividualChat={upchatIndividualChat}
@@ -145,7 +144,7 @@ function Dashboard() {
           />
         </div>
 
-        <div className="w-2/3 h-screen bg-gradient-to-r from-gray-300 shadow-inner dark:bg-none">
+        <div className="w-3/4 h-screen bg-gradient-to-r from-gray-300 shadow-inner dark:bg-none">
           <MessageBox selectedChat={selectedChat} />
         </div>
       </div>

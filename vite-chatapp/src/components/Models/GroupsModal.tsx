@@ -129,14 +129,13 @@ function GroupDrawer({
       id="drawer-example"
       aria-labelledby="drawer-label"
     >
-      <div className="h-full">
-        {/* heading  */}
-        <div className="p-2 m-2 h-20 transparent-bg flex align-items-center">
+      <div className="h-full bg-blue-600 dark:bg-black">
+        <div className="p-2 h-24 transparent-bg flex align-items-center">
           <h5
             id="drawer-label"
-            className="inline-flex text-3xl text-blue-600 items-center mb-4 font-semibold "
+            className="inline-flex text-3xl text-white items-center mb-4 font-semibold "
           >
-            <HiOutlineUserGroup className="me-3" />
+            <HiOutlineUserGroup className="me-3 text-6xl bg-blue-600 text-white p-2 rounded-full" />
             Create Group Chat
           </h5>
           <button
@@ -150,7 +149,7 @@ function GroupDrawer({
         </div>
         <div className="flex">
         <button
-          className=" bg-blue-600 text-white p-2.5 w-full hover:bg-slate-100 hover:text-blue-600"
+          className=" bg-blue-400 text-white p-2.5 w-full hover:bg-slate-100 hover:text-blue-600"
           onClick={() => setisMembersVisible(!isMembersVisible)}
         >
           Click to Add Group Members

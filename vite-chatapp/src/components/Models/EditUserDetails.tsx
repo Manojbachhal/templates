@@ -89,8 +89,6 @@ function EditUserDetails({ editUserDetailsOpen, togglevisiblity }: props) {
           >
           
 
-
-            {/* <div className="w-full"> */}
               <div className={`mx-2 ${!inputVis==true?"hidden":"block"}`}>
                 <label
                   htmlFor="groupname"
