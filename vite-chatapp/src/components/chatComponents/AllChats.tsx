@@ -14,8 +14,8 @@ interface props {
 function AllChats({ upchatIndividualChat, chatData }: props) {
 
   const [contentHeight, setContentHeight] = useState(480);
-  const [Data,setData]=useState(chatData)
-  const [notification,setNotification]=useState<ChatGroup[]>([]);
+  const [Data, setData] = useState(chatData)
+  const [notification, setNotification] = useState<ChatGroup[]>([]);
 
   useEffect(() => {
     const contentElement = document.querySelector(".recent-chats");
@@ -32,27 +32,27 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
 
   useEffect(() => {
     socket.on("message received", (newMessage: any) => {
-      if ( !selectedChatCompare || selectedChatCompare._id !== newMessage.chat._id) {
-        setNotification([newMessage,...notification]);
-        
+      if (!selectedChatCompare || selectedChatCompare._id !== newMessage.chat._id) {
+        setNotification([newMessage, ...notification]);
+
       } else {
-        chatData?.map((ele)=>{
-          if(ele._id==newMessage._id){
-            ele.latestMessage.content=newMessage.content;
+        chatData?.map((ele) => {
+          if (ele._id == newMessage._id) {
+            ele.latestMessage.content = newMessage.content;
           }
         })
       }
-      selectedChatCompare=newMessage
+      selectedChatCompare = newMessage
     });
   });
 
   useEffect(() => {
-    gsap.fromTo('.latestMessage', 
-      { scale: 1.1 }, 
+    gsap.fromTo('.latestMessage',
+      { scale: 1.1 },
       { scale: 1.0, duration: 1 }
     );
   });
-  console.log(notification,"notification")
+  console.log(notification, "notification")
 
   // logged in user
   const currentUser = useAppSelector((store: any) => store.auth.user);
@@ -66,7 +66,7 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
         <h5 className="inline-flex px-3 text-3xl text-white items-center mb-4 font-semibold ">
           Chats
         </h5>
-        
+
       </div>
 
       <p className="text-2xl font-thin text-white px-2">Recent</p>
@@ -81,20 +81,23 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
             return chat.isGroupChat ? (
               <div
                 key={chat._id}
-                className="p-3 my-2 mx-3 contact-bg "
+                className="my-2 mx-3 glass"
                 onClick={() => upchatIndividualChat(chat)}
               >
                 <div className="hover:cursor-pointer flex align-center ">
                   <div className="userImage">
-                      <img src={chat.groupPic} alt="" width={"30%"} className="" />
+                    <img src={chat.groupPic} alt="" className="w-24 h-20" />
                   </div>
 
                   <div className="ps-2 ">
-                    <p className="px-2 text-white uppercase">{chat.chatName}</p>
-                    <p className="px-2 absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
-                      {chat.latestMessage?.content}
-                    </p>
+                    <p className="px-2 text-2xl font-black  dark:text-white  uppercase">{chat.chatName}</p>
+                    <div className="flex flex-wrap px-2">
+                      <p className="text-blue-500 font-bold underline">Latest Message : </p>
+                      <p className="px-2 text-blue-500 "> {chat.latestMessage?.content}</p>
+
+                    </div>
                   </div>
+
                 </div>
               </div>
             ) : (
@@ -109,31 +112,31 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
                           upchatIndividualChat(chat);
                         }}
                       >
-                        <div key={user._id}  className="flex hover:cursor-pointer " >
+                        <div key={user._id} className="flex hover:cursor-pointer " >
                           <div className="userImage w-24">
 
-                          <img
-                            src={user.pic}
-                            alt=""
-                            className=""
-                         
-                          />
+                            <img
+                              src={user.pic}
+                              alt=""
+                              className=""
+
+                            />
                           </div>
                           <div className="ps-2 font-sans flex align-items-center justify-center flex-col  ">
                             <p className="px-2 text-2xl font-black  dark:text-white  uppercase" >
-                            {/* tracking-wider */}
+                              {/* tracking-wider */}
                               {user.name}
                             </p>
                             <div>
-                              <div className="flex px-2"> 
-                             <p className="text-blue-500 font-bold underline">Latest Message : </p> 
-                                 <p className="px-2 text-blue-500 "> {chat.latestMessage?.content}</p>
-                                  
+                              <div className="flex flex-wrap px-2">
+                                <p className="text-blue-500 font-bold underline">Latest Message : </p>
+                                <p className="px-2 text-blue-500 "> {chat.latestMessage?.content}</p>
+
                               </div>
 
                             </div>
                           </div>
-                          
+
                         </div>
                       </div>
                     )

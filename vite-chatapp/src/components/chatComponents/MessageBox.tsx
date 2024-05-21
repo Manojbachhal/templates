@@ -10,7 +10,7 @@ import { io } from "socket.io-client";
 import mobileBanner from '../../data/undraw_Modern_design_re_dlp8.png'
 import DeskTopBanner from '../../data/undraw_online_message_re_3m5v.png'
 import EmojiPicker from 'emoji-picker-react';
-
+import { FcVideoCall } from "react-icons/fc";
 interface indivisualChat {
   selectedChat: ChatGroup | undefined;
 }
@@ -108,24 +108,30 @@ function MessageBox({ selectedChat }: indivisualChat) {
   return (
     <>
       {selectedChat ? (
-        <div className=" flex shadow-2xl ps-2 h-full dark:bg-black">
+        <div className="flex  shadow-2xl ps-2 h-full dark:bg-black">
           <div className={` ${chatHeaderDrawer ? "w-2/3" : "w-full"}`}>
             {/* chat header */}
             <div
-              className="flex dark:bg-transparent chatheader border-b-4 border-blue-500 dark:text-white hover:cursor-pointer p-2"
+              className="flex dark:bg-transparent justify-evenly px-5 items-center chatheader border-b-4 border-blue-500 dark:text-white hover:cursor-pointer p-2"
               onClick={togglechatHeaderDrawer}
-              style={{ height: "12%" }}
+              style={{ height: "10%" }}
             >
 
               {selectedChat &&
                 "isGroupChat" in selectedChat &&
                 selectedChat.isGroupChat ? (
-                <>
-                  <img src={selectedChat.groupPic} alt="" width={"80px"} />
-                  <p className="text-sm ps-2 my-auto text-gray-500">
-                    {selectedChat.chatName}
-                  </p>
-                </>
+
+                <div className="flex w-full h-full">
+                  <div className="avatar">
+                    <div className="w-24 rounded-full">
+                      <img src={selectedChat.groupPic} />
+                    </div>
+                    <p className="ps-2 my-auto lg:text-3xl md:text-2xl"> {selectedChat.chatName}</p>
+                  </div>
+                  
+
+                </div>
+
               ) : (
                 selectedChat &&
                 "pic" in selectedChat.users[1] &&
@@ -156,6 +162,9 @@ function MessageBox({ selectedChat }: indivisualChat) {
                   );
                 })
               )}
+                  <div className="border-l-2 ps-4">
+                   <FcVideoCall className="text-3xl"/>
+                  </div>
             </div>
 
             {/* chat body */}
@@ -232,7 +241,7 @@ function MessageBox({ selectedChat }: indivisualChat) {
           <div
             className={` ms-2 bg-gradient-to-r from-gray-300 h-full  ${chatHeaderDrawer ? "w-1/3" : "hidden"
               } text-white`}
-           
+
           >
             <ChatDetails
               togglechatHeaderDrawer={togglechatHeaderDrawer}

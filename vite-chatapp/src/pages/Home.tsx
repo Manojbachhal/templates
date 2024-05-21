@@ -134,7 +134,7 @@ function Dashboard() {
           />
         </div>
 
-        <div className="h-screen md:w-1/4 border-3 shadow-right bg-gradient-to-r from-gray-900 dark:bg-black">
+        <div className="h-screen md:w-1/4 border-3 shadow-right bg-gradient-to-r from-red-200 to-red-100 dark:bg-gradient-to-r dark:from-black dark:to-black">
           <NavComponents
             navDrawer={navDrawer}
             upchatIndividualChat={upchatIndividualChat}

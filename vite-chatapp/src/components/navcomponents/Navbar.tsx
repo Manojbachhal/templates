@@ -39,13 +39,7 @@ const Navbar = ({ toggleNavDrawer, toggleGroupDrawer, toggleTheme, GroupdrawerOp
 
   useEffect(() => {
 
-    const animation = gsap.to(logoRef.current, {
-      duration: 2,
-      rotate: 360,
-      scale:1.1,
-      delay: 0.5,
-      ease: "power2.inOut",
-    })
+  
 
     const navAnimation = gsap.from([FcSmsRef.current, FcContactsRef.current, GroupRef.current, usersRef.current, userInfoRef.current], {
       duration: 1,
@@ -54,7 +48,7 @@ const Navbar = ({ toggleNavDrawer, toggleGroupDrawer, toggleTheme, GroupdrawerOp
 
     })
     return () => {
-      animation.kill();
+   
       navAnimation.kill();
     }
 
@@ -124,15 +118,17 @@ const Navbar = ({ toggleNavDrawer, toggleGroupDrawer, toggleTheme, GroupdrawerOp
     <>
       <div className="w-full h-screen overflow-y-hidden overflow-x-hidden md:flex flex-col justify-between transparent-bg ">
         <ul className="menu menu-vertical">
-          <li ref={logoRef} >
-            <div className="avatar placeholder bg-slate-700" style={{ margin: '-30px', padding: '20px' }}>
-              <div className="logo m-auto text-center">
-                <img
+          <li>
+            <div className="avatar placeholder bg-white text-blue-600" style={{ margin: '-30px', padding: '20px' }}>
+              <div className="logo text-center">
+                {/* <img
                   src={logoA}
                   alt=""
                   style={{ width: "80px" }}
                   className="m-auto pt-1 "
-                />
+                /> */}
+                <h1 className="text-6xl">CS</h1>
+                
               </div>
               
             </div>
