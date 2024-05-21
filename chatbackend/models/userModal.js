@@ -16,6 +16,8 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    lastActive:{type:"String"},
+    online:{type:'boolean'}
   },
   { timestaps: true }
 );

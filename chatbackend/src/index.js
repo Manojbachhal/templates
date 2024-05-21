@@ -10,6 +10,7 @@ const contactRoutes = require("../routes/contactRoutes");
 const app = express();
 const server = http.createServer(app);
 const cors = require("cors");
+const User = require('../models/userModal')
 
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
@@ -41,10 +42,7 @@ app.get("/", async (req, res) => {
 });
 
 const PORT = process.env.PORT;
-//
-// io.on("connection", (socket) => {
-//   console.log("a user connected");
-// });
+
 
 // server port
 server.listen(PORT, async () => {
@@ -55,10 +53,12 @@ server.listen(PORT, async () => {
 io.on("connection", (socket) => {
   console.log("a user connected");
 
-  socket.on("setup", (userData) => {
+  socket.on("setup", async (userData) => {
     try {
       socket.join(userData._id);
       socket.emit("connected");
+      await User.findByIdAndUpdate(userData._id, { lastActive: new Date().toLocaleString()});
+      await User.findByIdAndUpdate(userData._id, { online: true});
     } catch (error) {}
   });
 
@@ -66,6 +66,10 @@ io.on("connection", (socket) => {
     socket.join(room);
     console.log(`user joined room No ${room}`);
   });
+
+  socket.on('typing',(room)=>socket.in(room).emit('typing'))
+  socket.on('stop typing',(room)=>socket.in(room).emit('stop typing'))
+
 
   socket.on("new message", (newMessage, users) => {
     let chat = newMessage.chat;
@@ -78,4 +82,19 @@ io.on("connection", (socket) => {
         socket.in(user._id).emit("message received", newMessage);
     });
   });
+
+  const handleDisconnect = async ()=>{
+    try {
+      
+      await User.findByIdAndUpdate(userData._id, { lastActive: new Date().toLocaleString()});
+      await User.findByIdAndUpdate(userData._id, { online: false});
+    } catch (error) {
+      
+    }
+  
+}
+
+
+  socket.on('disconnect', handleDisconnect)
+  
 });

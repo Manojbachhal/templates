@@ -41,9 +41,9 @@ const userLogin = async ({ email, password }) => {
     }
 
     if (bcrypt.compareSync(password, user.password)) {
+      
       userData = await userModal.findOne({ email }).select("-password");
-      // const pic = userData.pic;
-      // userData.pic = `${process.env.BASEURL}uploads/${pic}`;
+    
       return { statusCode: 200, token: generateToken(user), user: userData };
     } else {
       return { statusCode: 401, message: "Incorrect password" };

@@ -20,6 +20,9 @@ let selectedChatCompare: any = undefined;
 
 function MessageBox({ selectedChat }: indivisualChat) {
 
+  const [typing,setTyping]=useState(false);
+  const [isTyping,setIsTyping]=useState(false);
+
   // react hooks
   const [chatHeaderDrawer, setChatheaderDrawer] = useState(false);
   const [chatDetails, setChatDetails] = useState(true);
@@ -37,7 +40,12 @@ function MessageBox({ selectedChat }: indivisualChat) {
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", currentUser);
-  }, []);
+    // return ()=>{
+    //   socket.disconnect();
+    // }
+    socket.on('typing',setIsTyping(true))
+    socket.on('stop typing',setIsTyping(false))
+  }, [currentUser,ENDPOINT]);
 
   useEffect(() => {
     socket.on("message received", (newMessage: any) => {
@@ -54,6 +62,7 @@ function MessageBox({ selectedChat }: indivisualChat) {
 
   const handleMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
     if (!selectedChat) {
       console.error("selectedChat is undefined");
       return;
@@ -103,7 +112,23 @@ function MessageBox({ selectedChat }: indivisualChat) {
     }
   }, [selectedChat && selectedChat._id]);
 
+  const handleTyping = ()=>{
+    if(!typing){
+      setTyping(true)
+      socket.emit('typing',selectedChat?._id)
+    }
 
+    var time = new Date().getTime();
+    var timeLength = 3000;
+    setTimeout(()=>{
+        var timeNow = new Date().getTime();
+        var timeDiff = timeNow-time;
+        if(timeDiff>=timeLength){
+          socket.emit('not typing',selectedChat?._id)
+          setTyping(false)
+        }
+    },timeLength)
+  }
 
   return (
     <>
@@ -220,11 +245,15 @@ function MessageBox({ selectedChat }: indivisualChat) {
                 className="flex items-stretch py-2.5 w-full"
                 onSubmit={handleMessageSend}
               >
+                 {/* {
+                isTyping?'test':'4'
+              } */}
                 <input
                   type="text"
                   ref={msgRef}
                   placeholder="Write Message"
                   className="flex-1 mx-auto px-2 focus:outline-none bg-transparent placeholder-blue-500  dark:placeholder-gray-500 "
+                  onChange={handleTyping}
                 />
                 {/* <EmojiPicker open={emoji} reactionsDefaultOpen={true} style={{position:'absolute',bottom:'10%',right:'9%'}} /> */}
                 <div className="border-l-2 w-32 flex items-center justify-around">
