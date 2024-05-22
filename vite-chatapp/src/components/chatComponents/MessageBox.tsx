@@ -1,5 +1,4 @@
-import { PiNavigationArrow } from "react-icons/pi";
-import { IoChatbubblesOutline } from "react-icons/io5";
+import { PiNavigationArrow } from "react-icons/pi"
 import { ChatGroup, Message } from "../../interfaces/interfaces";
 import { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../redux/hooks";
@@ -7,10 +6,9 @@ import { getMessages, sendMessages } from "../../redux/chats/chatAction";
 import ChatDetails from "./ChatDetails";
 import { io } from "socket.io-client";
 
-import mobileBanner from '../../data/undraw_Modern_design_re_dlp8.png'
-import DeskTopBanner from '../../data/undraw_online_message_re_3m5v.png'
 import EmojiPicker from 'emoji-picker-react';
 import { FcVideoCall } from "react-icons/fc";
+import { DiVim } from "react-icons/di";
 interface indivisualChat {
   selectedChat: ChatGroup | undefined;
 }
@@ -20,12 +18,12 @@ let selectedChatCompare: any = undefined;
 
 function MessageBox({ selectedChat }: indivisualChat) {
 
-  const [typing,setTyping]=useState(false);
-  const [isTyping,setIsTyping]=useState(false);
+  const [typing, setTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
 
   // react hooks
   const [chatHeaderDrawer, setChatheaderDrawer] = useState(false);
-  const [chatDetails, setChatDetails] = useState(true);
+
   const [emoji, setEmoji] = useState(false);
   //  redux
   const [Allmessages, setAllmessages] = useState<Message[]>([]);
@@ -33,19 +31,20 @@ function MessageBox({ selectedChat }: indivisualChat) {
 
   // form ref and fn
   const msgRef = useRef<HTMLInputElement>(null);
-  const chatBodyRef = useRef<HTMLDivElement>(null);
+ 
   const handleEmoji = () => {
     setEmoji(!emoji)
   }
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", currentUser);
-    // return ()=>{
-    //   socket.disconnect();
-    // }
-    socket.on('typing',setIsTyping(true))
-    socket.on('stop typing',setIsTyping(false))
-  }, [currentUser,ENDPOINT]);
+    
+    socket.on('typing', () => setIsTyping(true));
+    socket.on('stop typing', () => setIsTyping(false));
+    return () => {
+      socket.emit('disconnected')
+    }
+  }, [currentUser, ENDPOINT]);
 
   useEffect(() => {
     socket.on("message received", (newMessage: any) => {
@@ -58,11 +57,13 @@ function MessageBox({ selectedChat }: indivisualChat) {
         setAllmessages([...Allmessages, newMessage]);
       }
     });
+
+    
   });
 
   const handleMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!selectedChat) {
       console.error("selectedChat is undefined");
       return;
@@ -93,7 +94,6 @@ function MessageBox({ selectedChat }: indivisualChat) {
     if (selectedChat) {
       let res = await getMessages("/api/message", selectedChat._id);
       setAllmessages(res);
-      console.log(res);
       socket.emit("join chat", selectedChat._id);
     }
   };
@@ -112,28 +112,43 @@ function MessageBox({ selectedChat }: indivisualChat) {
     }
   }, [selectedChat && selectedChat._id]);
 
-  const handleTyping = ()=>{
-    if(!typing){
-      setTyping(true)
-      socket.emit('typing',selectedChat?._id)
-    }
+  // const handleTyping = () => {
+  //   if (!typing) {
+  //     setTyping(true)
+  //     socket.emit('typing', selectedChat?._id)
+  //   }
 
-    var time = new Date().getTime();
-    var timeLength = 3000;
-    setTimeout(()=>{
-        var timeNow = new Date().getTime();
-        var timeDiff = timeNow-time;
-        if(timeDiff>=timeLength){
-          socket.emit('not typing',selectedChat?._id)
-          setTyping(false)
-        }
-    },timeLength)
-  }
+  //   var time = new Date().getTime();
+  //   var timeLength = 3000;
+  //   setTimeout(() => {
+  //     var timeNow = new Date().getTime();
+  //     var timeDiff = timeNow - time;
+
+  //     if (timeDiff >= timeLength) {
+  //       socket.emit('not typing', selectedChat?._id)
+  //       setTyping(false)
+  //     }
+  //   }, timeLength)
+  // }
+  const handleTyping = () => {
+    if (!typing) {
+      setTyping(true);
+      socket.emit('typing', selectedChat?._id);
+    }
+  
+    const typingTimeout = setTimeout(() => {
+      setTyping(false);
+      socket.emit('stop typing', selectedChat?._id);
+    }, 2000); // Adjust the timeout duration as needed
+  
+    // Clear the timeout whenever typing occurs again
+    return () => clearTimeout(typingTimeout);
+  };
 
   return (
     <>
       {selectedChat ? (
-        <div className="flex  shadow-2xl ps-2 h-full dark:bg-black">
+        <div className="flex shadow-2xl ps-2 h-full dark:bg-black">
           <div className={` ${chatHeaderDrawer ? "w-2/3" : "w-full"}`}>
             {/* chat header */}
             <div
@@ -153,7 +168,7 @@ function MessageBox({ selectedChat }: indivisualChat) {
                     </div>
                     <p className="ps-2 my-auto lg:text-3xl md:text-2xl"> {selectedChat.chatName}</p>
                   </div>
-                  
+
 
                 </div>
 
@@ -165,21 +180,28 @@ function MessageBox({ selectedChat }: indivisualChat) {
                   return (
                     user._id !== currentUser._id && (
                       <div key={index} className="flex w-full h-full">
-                        <div className="avatar online">
-                          <div className="w-24 rounded-full">
-                            <img src={user.pic} />
-                          </div>
-                        </div>
+
+                        {
+                          user.online ? (
+                            <div className="avatar online">
+                              <div className="w-24">
+                                <img src={user.pic} />
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="avatar offline hidden">
+                              <div className="w-24">
+                                <img src={user.pic} />
+                              </div>
+                            </div>
+                          )
+                        }
 
                         <p className="ps-2 my-auto lg:text-3xl md:text-2xl">
                           {user.name}
                         </p>
 
-                        {/* <div className="avatar offline hidden">
-                          <div className="w-24 rounded-full">
-                            <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-                          </div>
-                        </div> */}
+
                       </div>
 
 
@@ -187,15 +209,16 @@ function MessageBox({ selectedChat }: indivisualChat) {
                   );
                 })
               )}
-                  <div className="border-l-2 ps-4">
-                   <FcVideoCall className="text-3xl"/>
-                  </div>
+              <div className="border-l-2 ps-4">
+                <FcVideoCall className="text-3xl" />
+              </div>
             </div>
 
             {/* chat body */}
             <div
               className="chatbody bg-transparent custom-scrollbar overflow-y-scroll px-5 scroll-snap-y-container flex flex-col overflow-x-hidden dark:text-white"
               id="chatBox"
+
             >
               {Allmessages.map((currentMsg: Message) => {
                 return (
@@ -237,17 +260,17 @@ function MessageBox({ selectedChat }: indivisualChat) {
             {/* chat footer */}
             <div
               className="transparent-bg w-11/12 mt-2 m-auto px-2 flex items-stretch rounded"
-              style={{ boxShadow: " gray 0px 8px 24px" }}
+              style={{ boxShadow: " gray 0px 8px 24px", height: '8%' }}
             >
-
+               {
+              isTyping?'Typing...':''
+              }
               <form
                 action=""
                 className="flex items-stretch py-2.5 w-full"
                 onSubmit={handleMessageSend}
               >
-                 {/* {
-                isTyping?'test':'4'
-              } */}
+               
                 <input
                   type="text"
                   ref={msgRef}
@@ -255,9 +278,12 @@ function MessageBox({ selectedChat }: indivisualChat) {
                   className="flex-1 mx-auto px-2 focus:outline-none bg-transparent placeholder-blue-500  dark:placeholder-gray-500 "
                   onChange={handleTyping}
                 />
-                {/* <EmojiPicker open={emoji} reactionsDefaultOpen={true} style={{position:'absolute',bottom:'10%',right:'9%'}} /> */}
+                <EmojiPicker open={emoji} reactionsDefaultOpen={true} style={{position:'absolute',bottom:'10%',right:'9%'}} onEmojiClick={(e  ) => {
+            if (msgRef.current) {
+              msgRef.current.value += e.emoji;
+            }
+          }}/>
                 <div className="border-l-2 w-32 flex items-center justify-around">
-
                   <button className={`rounded-full p-1 ${emoji ? "bg-blue-200" : "bg-blue-500"} `} onClick={handleEmoji} > 😊 </button>
                   <button type="submit" className="rounded-full bg-blue-500">
                     <PiNavigationArrow className="transform rotate-90 text-white text-3xl p-1" />
@@ -268,10 +294,7 @@ function MessageBox({ selectedChat }: indivisualChat) {
           </div>
 
           <div
-            className={` ms-2 bg-gradient-to-r from-gray-300 h-full  ${chatHeaderDrawer ? "w-1/3" : "hidden"
-              } text-white`}
-
-          >
+            className={` ms-2 bg-gradient-to-r from-gray-300 h-full  ${chatHeaderDrawer ? "w-1/3" : "hidden"  } text-white`}>
             <ChatDetails
               togglechatHeaderDrawer={togglechatHeaderDrawer}
               selectedChat={selectedChat}
@@ -299,4 +322,3 @@ function MessageBox({ selectedChat }: indivisualChat) {
 }
 
 export default MessageBox;
-// https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg

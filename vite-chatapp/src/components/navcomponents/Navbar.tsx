@@ -25,10 +25,11 @@ interface props {
   toggleTheme: () => void;
   GroupdrawerOpen: boolean;
   isDark: boolean;
+  handleSignout:()=>void;
 }
 
 
-const Navbar = ({ toggleNavDrawer, toggleGroupDrawer, toggleTheme, GroupdrawerOpen, isDark, }: props) => {
+const Navbar = ({ toggleNavDrawer, toggleGroupDrawer, toggleTheme, GroupdrawerOpen, isDark,handleSignout }: props) => {
 
   let logoRef = useRef(null);
   let FcSmsRef = useRef(null);
@@ -38,9 +39,6 @@ const Navbar = ({ toggleNavDrawer, toggleGroupDrawer, toggleTheme, GroupdrawerOp
   let userInfoRef = useRef(null);
 
   useEffect(() => {
-
-  
-
     const navAnimation = gsap.from([FcSmsRef.current, FcContactsRef.current, GroupRef.current, usersRef.current, userInfoRef.current], {
       duration: 1,
       x: 100,
@@ -61,6 +59,7 @@ const Navbar = ({ toggleNavDrawer, toggleGroupDrawer, toggleTheme, GroupdrawerOp
     setActiveNavItem(item);
     toggleNavDrawer(item);
   };
+
   const [isActive, setIsActive] = useState<any>({
     chatNav: true,
     contactNav: false,
@@ -245,6 +244,7 @@ const Navbar = ({ toggleNavDrawer, toggleGroupDrawer, toggleTheme, GroupdrawerOp
                 color: "inherit",
               }}
               data-tip="Sign Out"
+              onClick={handleSignout}
             >
               <img
                 src={logoutIcon}

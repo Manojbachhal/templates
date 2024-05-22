@@ -21,6 +21,7 @@ export interface ChatGroup {
 }
 
 export interface User {
+  online: any;
   _id: string;
   name: string;
   email: string;

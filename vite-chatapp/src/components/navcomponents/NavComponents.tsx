@@ -16,6 +16,7 @@ interface Props {
   toggleNavDrawer: (val: string) => void;
   updateChats: (val: ChatGroup) => void;
   chatData: ChatGroup[];
+  
 }
 
 function NavComponents({

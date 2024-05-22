@@ -57,7 +57,7 @@ function Login() {
   });
 
   return (
-    <div className="auth-bg py-8 h-screen flex items-center justify-center">
+    <div className="auth-bg py-8 h-screen flex items-center justify-center bg-gradient-to-r from-red-200 to-blue-600 dark:bg-gradient-to-r dark:from-black dark:to-black">
       <div className="container mx-auto  px-0">
         <div className="md:flex">
           <div className="col-span-1 md:w-1/3 lg:col-span-1 xl:col-span-1">

@@ -21,13 +21,10 @@
   color: #7269ef;
 }
 
-.light {
-  /* background: var(--side-drawer); */
-}
+
 
 .auth-bg {
-  background: linear-gradient(to right, #1f4037, rgb(60, 60, 255));
-  /* background: linear-gradient(to right, #1f4037, #99f2c8); */
+  /* background: linear-gradient(to right, #1f4037, rgb(60, 60, 255)) */
 }
 
 .nav-bg {

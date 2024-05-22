@@ -50,6 +50,8 @@ server.listen(PORT, async () => {
   console.log(`Listening to port http://localhost:${PORT}`);
 });
 
+
+
 io.on("connection", (socket) => {
   console.log("a user connected");
 
@@ -57,6 +59,7 @@ io.on("connection", (socket) => {
     try {
       socket.join(userData._id);
       socket.emit("connected");
+      
       await User.findByIdAndUpdate(userData._id, { lastActive: new Date().toLocaleString()});
       await User.findByIdAndUpdate(userData._id, { online: true});
     } catch (error) {}
@@ -83,18 +86,17 @@ io.on("connection", (socket) => {
     });
   });
 
-  const handleDisconnect = async ()=>{
-    try {
-      
-      await User.findByIdAndUpdate(userData._id, { lastActive: new Date().toLocaleString()});
-      await User.findByIdAndUpdate(userData._id, { online: false});
-    } catch (error) {
-      
+  socket.on('disconnected', async () => {
+    const userData = socket.userData;
+    if (userData) {
+      try {
+        await User.findByIdAndUpdate(userData._id, { lastActive: new Date().toLocaleString(), online: false });
+        console.log("first")
+      } catch (error) {
+        console.error(error);
+      }
     }
-  
-}
-
-
-  socket.on('disconnect', handleDisconnect)
+    console.log('A user disconnected');
+  });
   
 });

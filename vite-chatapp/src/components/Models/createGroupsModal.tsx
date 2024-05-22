@@ -29,7 +29,6 @@ function GroupDrawer({
   // redux hookes
   const dispatch = useAppDispatch();
   const usersData = useAppSelector((storedData) => storedData.user.users);
-  let Loading = useAppSelector((store) => store.chats.loading);
 
   // input hooks
   const searchRef = useRef<HTMLInputElement>(null);

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useAppSelector } from "../../redux/hooks";
 import { ChatGroup } from "../../interfaces/interfaces";
 import SkeletonLoading from "../svg/SkeletonLoading";
 import gsap from 'gsap';
 const ENDPOINT = "http://localhost:3001";
 import { io } from "socket.io-client";
+import { mySocketContext } from "../../Providers/SocketContext";
 let socket: any = undefined;
 let selectedChatCompare: any = undefined;
 interface props {
@@ -27,6 +28,12 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", currentUser);
+
+
+    return () => {
+      socket.emit('disconnnect')
+    }
+    // socket.emit('online')
   }, []);
 
 
@@ -113,15 +120,32 @@ function AllChats({ upchatIndividualChat, chatData }: props) {
                         }}
                       >
                         <div key={user._id} className="flex hover:cursor-pointer " >
-                          <div className="userImage w-24">
+                          {/* <div className="userImage w-24">
 
                             <img
                               src={user.pic}
                               alt=""
                               className=""
 
-                            />
-                          </div>
+                            /> */}
+                            {
+                              user.online ? (
+                                <div className="avatar online">
+                                  <div className="w-24">
+                                    <img src={user.pic} />
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="avatar offline hidden">
+                                  <div className="w-24">
+                                    <img src={user.pic} />
+                                  </div>
+                                </div>
+                              )
+                            }
+
+
+                          {/* </div> */}
                           <div className="ps-2 font-sans flex align-items-center justify-center flex-col  ">
                             <p className="px-2 text-2xl font-black  dark:text-white  uppercase" >
                               {/* tracking-wider */}

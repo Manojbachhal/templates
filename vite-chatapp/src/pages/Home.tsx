@@ -131,10 +131,11 @@ function Dashboard() {
             toggleTheme={toggleTheme}
             isDark={isDark}
             GroupdrawerOpen={GroupdrawerOpen}
+          handleSignout={handleSignout}
           />
         </div>
 
-        <div className="h-screen md:w-1/4 border-3 shadow-right bg-gradient-to-r from-red-200 to-red-100 dark:bg-gradient-to-r dark:from-black dark:to-black">
+        <div className="h-screen md:w-1/4 border-3 shadow-right bg-gradient-to-r from-red-200 to-blue-600 dark:bg-gradient-to-r dark:from-black dark:to-black">
           <NavComponents
             navDrawer={navDrawer}
             upchatIndividualChat={upchatIndividualChat}
